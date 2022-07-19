@@ -1,0 +1,213 @@
+import discord
+from discord.ext import commands
+import time as t
+import random as rd
+#from discord_slash import ButtonStyle, SlashCommand
+#from discord_slash.utils.manage_components import *
+from database_handler_k import DatabaseHandler
+database_handler = DatabaseHandler("database_kowalsky.db")
+
+intents = discord.Intents.default()
+intents.members = True
+
+def is_vipe(id):
+    return id == 691380397673545828
+
+
+# ------------------- COMMANDES ---------------#
+
+class CommandesBase(commands.Cog):
+    def __init__(self, bot: commands.Bot, version):
+        self.bot = bot
+        self.version = version
+   
+    
+
+
+     # Serverinfo :
+
+    @commands.command()
+    @commands.guild_only()
+    async def serverinfo(self, ctx):
+        server = ctx.guild
+        nbTextChans = len(server.text_channels)
+        if nbTextChans == 1:
+            txtTextChans = "1 salon écrit"
+        else:
+            txtTextChans = f"{nbTextChans} salons écrits"
+        nbVoiceChans = len(server.voice_channels)
+        if nbVoiceChans == 1:
+            txtVoiceChans = f"1 salon vocal"
+        else:
+            txtVoiceChans = f"{nbVoiceChans} salons vocaux"
+        servDescription = server.description
+        nbMembres = server.member_count
+        nom = server.name
+        
+        #Création de l'embed:
+        embed = discord.Embed(title = f"**Informations de {server.name}**", color = bleu)
+        embed.set_thumbnail(url = ctx.guild.icon_url)
+        embed.add_field(name = "Membres", value = nbMembres, inline = False)
+        embed.add_field(name = "Salons textuels", value = txtTextChans, inline = False)
+        embed.add_field(name = "Salons vocaux", value = txtVoiceChans, inline = False)
+        await ctx.send(embed = embed)
+        
+        
+    # Say :
+
+    @commands.command()
+    async def say(self, ctx, *, texte):
+        await ctx.message.delete()
+        if texte == "@everyone":
+            await ctx.send("nan c pa koul")
+        else:
+            
+            await ctx.send(texte)
+        
+        
+    # Rate :
+
+    @commands.command()
+    async def rate(self, ctx, *texte):
+        note = rd.randint(0,10)
+        texte2 = " ".join(texte)
+        await ctx.send(f"Je note `{texte2}` {note}/10")
+
+
+    
+            
+            
+    # Support :
+            
+    @commands.command()
+    async def support(self, ctx):
+        embed = discord.Embed(title = "tiens stv ya un serveur d'aide", color = bleu, description = "[clique ici mon reuf](https://discord.gg/f2xBTAxB6W)")
+        await ctx.send(embed = embed)
+        
+        
+    # Invite :
+    
+    @commands.command()
+    async def invite(self, ctx):
+        embed = discord.Embed(title = "Tu veux m'ajouter à un serveur ?", color = bleu, description = "[clique ici mon reuf](https://discord.com/api/oauth2/authorize?client_id=926864538681368626&permissions=8&scope=bot)")
+        await ctx.send(embed = embed)
+
+    
+    # Update:
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(administrator = True)
+    async def update(self, ctx, y = None, channel: discord.TextChannel = None):
+
+        def checkMessage(message):
+                return message.author == ctx.message.author and ctx.message.channel == message.channel
+
+        if y == None:
+            embed = discord.Embed(color = bleu)
+            embed.add_field(name = "Mises à jour", value = """`k.update follow <salon>` -> permet de recevoir un message dans un salon à chaque maj
+
+`k.update unfollow` -> arrête de suivre les mises à jour
+
+Vous ne pouvez suivre les mises à jour que dans un salon par serveur""")
+            await ctx.send(embed = embed)
+        elif y == "follow":
+            if database_handler.is_following(ctx.guild.id):
+                await ctx.send("Ce serveur suit déjà les mises à jour")
+            else:
+                database_handler.add_channel(ctx.guild.id, channel.id)  
+                await ctx.send(f"Les mises à jour du bot seront publiées dans {channel.mention} !")
+
+        elif y == "unfollow":
+            database_handler.delete_channel(ctx.guild.id)
+            await ctx.send('Les mises à jour ne seront plus publiées dans ce serveur') 
+
+
+    
+
+
+
+    """
+    @commands.command()
+    async def trade(self, ctx, member2 : discord.Member):
+
+        guild = ctx.guild
+        member = ctx.author
+        if member != member2:
+            def checkMessage(message):
+                return message.author == ctx.message.author and ctx.message.channel == message.channel
+
+            def checkMessage2(message):
+                return member == ctx.author 
+            
+            await ctx.send(f"tu veux donner un chad de quel rang à **{member2.name}** ?")
+            chad_given = await self.bot.wait_for("message", timeout = 20, check = checkMessage)
+            chad_given = int(chad_given.content)
+            if chad_given > 10 or chad_given < 1:
+                await ctx.send("ce rang de chad n'existe pas")
+                return
+
+            await ctx.send("tu veux recevoir un chad de quel rang ?")
+            chad_asked = await self.bot.wait_for("message", timeout = 20, check = checkMessage)
+            chad_asked = int(chad_asked.content)
+            if chad_asked > 10 or chad_asked < 1:
+                await ctx.send("ce rang de chad n'existe pas")
+                return
+
+            member_col = database_handler.get_collection(member.id)
+            member2_col = database_handler.get_collection(member2.id)
+            if has_chad(member_col, chad_given) and has_chad(member2_col, chad_asked):
+                pos1 = chad_pos(member_col, chad_given)
+                pos2 = chad_pos(member2_col, chad_asked)
+
+                if (member_col[pos1][1] > 1) and (member2_col[pos2][1] > 1):
+                    channel2 = await member2.create_dm()
+                    embed = discord.Embed(title = "", color = bleu, description = f"veux tu donner un chad de **rang {chad_asked}** et recevoir un chad de **rang {chad_given}** de la part de **{member.name} **?\n\nréponds par `oui` pour accepter, et réponds n'importe quoi pour refuser")
+                    embed.set_footer(text = "tu as 5 minutes pour répondre")
+                    await channel2.send(embed = embed)
+
+                    confirmation = await self.bot.wait_for('message', timeout = 300, check = checkMessage2)
+                    confirmation = str(confirmation.content)
+                    confirmation.lower()
+                    
+                    await ctx.send(f"j'ai envoyé un dm à {member2.name} pour savoir s'il veut échanger, jte dm bientôt pour te dire s'il accepte ou pas", delete_after = 10)
+            
+                    if confirmation == "oui":
+                        database_handler.remove_chad(member2.id, chad_asked)
+                        if has_chad(member2_col, chad_given):
+                            database_handler.add_chad(member2.id, chad_given)
+                        else:
+                            database_handler.add_new_chad(member2.id, chad_given)
+                        
+                        database_handler.remove_chad(member.id, chad_given)
+                        if has_chad(member_col, chad_asked):
+                            database_handler.add_chad(member.id, chad_asked)
+                        else:
+                            database_handler.add_new_chad(member.id, chad_asked)
+                        channel = await member.create_dm()
+                        await channel.send(f"échange réussi ! {member2.name} t'a bien donné un chad de rang {chad_asked}, et tu as donné un chad de rang {chad_given} !")
+                        await channel2.send(f"échange réussi ! {member.name} t'a bien donné un chad de rang {chad_given}, et tu as donné un chad de rang {chad_asked} !")
+                    
+                    else:
+
+                        channel = await member.create_dm()
+                        await channel.send(f"échange refusé par {member2.name}")
+                        await channel2.send(f"échange refusé")
+                else: 
+                    await ctx.send("Vous avez pas assez de chads dsl")
+            else:
+                await ctx.send("vous avez pas les bons chads dsl")
+        else:
+            await ctx.send("ben bien sûr fais des échanges tout seul")
+    """
+                
+                
+                
+
+
+
+# Couleurs :
+bleu = 0x2BE4FF #Normal
+vert = 0x00FF66 #Unban/unmute/free
+rouge = 0xFF2525 #Ban/mute/goulag
+orange = 0xFFAA26 #Erreur
