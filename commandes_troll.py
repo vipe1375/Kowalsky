@@ -267,7 +267,6 @@ class CommandesTroll(commands.Cog):
 
     @commands.command(aliases = ["salut", "bonjour"])
     async def coucou(self, ctx):
-        await ctx.message.delete()
         await ctx.send("salut mon reuf")
         
 

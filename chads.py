@@ -94,6 +94,8 @@ orange = 0xFFAA26 #Erreur
 
 # FONCTIONS
 
+
+
 def has_chad(result, index):
     if result == None or result == []:
         return False
@@ -336,6 +338,27 @@ class CommandsChads(commands.Cog):
                         txt += f"{chads_ranks[chad_id]} : **{chads_names[chad_id]}** x{chad_number}\n\n"
                 embed.add_field(name = f"Chads de {member.name}", value = txt)
                 await ctx.send(embed = embed)
+
+
+    @commands.command(aliases = ['topcoll', 'topcols', 'topcolls'])
+    async def topcol(self, ctx, opt: str = None):
+        lb = database_handler.lb_chadscore()
+        if opt == 'g':
+            msg = f""
+            for i in range(len(lb)):
+                u = self.bot.get_user(lb[i][0])
+                msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n\n"
+            embed = discord.Embed(title = f"Classement général des collections", description = msg, color = bleu)
+            await ctx.send(embed = embed)
+        elif opt == None:
+            msg = f""
+            for i in range(len(lb)):
+                user = ctx.guild.get_member(lb[i][0])
+                if user != None:
+                    msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n\n"
+            embed = discord.Embed(title = f"Classement des collections de {ctx.guild.name}", description = msg, color = bleu)
+            await ctx.send(embed = embed)
+
         
           
     @commands.command()
@@ -628,7 +651,7 @@ class CommandsChads(commands.Cog):
                     def check_buttons(m):
                         return m.origin_message.id == msg.id
 
-                    confirmation = await wait_for_component(self.bot, components = [action_row_buttons], check = check_buttons, timeout = 300)
+                    confirmation = await wait_for_component(self.bot, components = action_row_buttons, check = check_buttons, timeout = 300)
                     
                     await confirmation.defer(ignore=True)
             

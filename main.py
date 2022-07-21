@@ -31,7 +31,7 @@ bot = commands.Bot(command_prefix = "k.", intents = intents)
 bot.remove_command("help")
 
 # démarrage du bot
-version = "3.15.26"
+version = "3.16.26"
 
 @bot.event
 async def on_ready():
@@ -153,6 +153,7 @@ async def help(ctx, *, theme = None):
         #embed.add_field(name = "k.trade [membre avec qui échanger]", value = "permet d'échanger des chads avec quelqu'un dautre (si vous avez les chads que vous proposez bien entendu)")
         embed.add_field(name = "k.chadsong", value = "joue la douce mélodie des gigachads afin de satifaire vos tympans", inline = False)
         embed.add_field(name = "k.chadtips", value = "affiche un conseil pour devenir un gigachad", inline = False)
+        embed.add_field(name = "k.topcol", value = "affiche un classement des collections des membres du serveur (faites `k.topcol g` pour avoir le classement général)", inline = False)
         embed.add_field(name = "k.start", value = "démarre ta Route des Chads", inline = False)
         embed.add_field(name = "k.avance", value = "avance dans ta Route des Chads ! slowmode : 1j", inline = False)
         embed.add_field(name = "k.routedeschads", value = "affiche des infos sur la Route des Chads", inline = False)

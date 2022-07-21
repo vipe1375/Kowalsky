@@ -1,6 +1,12 @@
 import os
 import sqlite3
 
+def get_chadscore(result):
+    chadscore = 0
+    for i in result:
+        chadscore += i[0]*i[1]
+    return chadscore
+
 
 class DatabaseHandler():
     def __init__(self, database_name : str):
@@ -97,8 +103,28 @@ class DatabaseHandler():
 
 
 
+#-------------------- Chadscore -----------------------#
 
+    def lb_chadscore(self):
+        cursor = self.con.cursor()
+        query = f"SELECT * FROM Chadscore ORDER BY chadscore DESC;"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        cursor.close()
+        return result
 
+    def update_chadscore(self, user_id):
+        cursor = self.con.cursor()
+        query = f"SELECT chad_id, number FROM Collection WHERE user_id = {user_id} ORDER BY chad_id ASC ;"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        
+        new_chadscore = get_chadscore(result)
+
+        query2 = f"UPDATE Chadscore SET chadscore = {new_chadscore} WHERE user_id = {user_id};"
+        cursor.execute(query2)
+        self.con.commit()
+        cursor.close()
 
 
 #-------------------- Chads -----------------------#
