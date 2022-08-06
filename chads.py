@@ -347,7 +347,7 @@ class CommandsChads(commands.Cog):
             msg = f""
             for i in range(len(lb)):
                 u = self.bot.get_user(lb[i][0])
-                msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n\n"
+                msg += f"**{i+1}.** {i.name}, {lb[i][1]} chadscore\n\n"
             embed = discord.Embed(title = f"Classement général des collections", description = msg, color = bleu)
             await ctx.send(embed = embed)
         elif opt == None:
@@ -420,6 +420,7 @@ class CommandsChads(commands.Cog):
         else:
             database_handler.add_chad(ctx.author.id, c_id, 1)
             await ctx.send(f"t'as gagné un chad de rang {c_id} !")
+        database_handler.update_chadscore(ctx.author.id)
                 
     @commands.command()
     async def upgrade(self, ctx, *, rank):
@@ -435,10 +436,12 @@ class CommandsChads(commands.Cog):
                 else:
                     database_handler.add_new_chad(member.id, rank + 1)
                 await ctx.send(f"bien joué ! chad amélioré au rang {rank+1} !")
+                database_handler.update_chadscore(ctx.author.id)
             else:
                 await ctx.send("t'en a pas assez dsl, il t'en faut au moins 11")
         else:
             await ctx.send("t'as pas ce chad dsl")
+        
 
     @getchad.error
     async def getchad_error(self, ctx, error):
@@ -673,7 +676,7 @@ class CommandsChads(commands.Cog):
                         channel = await member.create_dm()
                         await channel.send(f"échange réussi ! {member2.name} t'a bien donné un chad de rang {chad_asked}, et tu as donné un chad de rang {chad_given} !")
                         await channel2.send(f"échange réussi ! {member.name} t'a bien donné un chad de rang {chad_given}, et tu as donné un chad de rang {chad_asked} !")
-                    
+                        database_handler.update_chadscore(ctx.author.id)
                     else:
 
                         channel = await member.create_dm()

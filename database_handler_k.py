@@ -105,6 +105,14 @@ class DatabaseHandler():
 
 #-------------------- Chadscore -----------------------#
 
+    def get_chadscore(self, user_id):
+        cursor = self.con.cursor()
+        query = f"SELECT * FROM Chadscore WHERE user_id = {user_id};"
+        cursor.execute(query)
+        result = cursor.fetchone()
+        cursor.close()
+        return result
+
     def lb_chadscore(self):
         cursor = self.con.cursor()
         query = f"SELECT * FROM Chadscore ORDER BY chadscore DESC;"
@@ -121,7 +129,10 @@ class DatabaseHandler():
         
         new_chadscore = get_chadscore(result)
 
-        query2 = f"UPDATE Chadscore SET chadscore = {new_chadscore} WHERE user_id = {user_id};"
+        if self.get_chadscore(user_id) == None:
+            query2 = f"INSERT INTO Chadscore(user_id, chadscore) VALUES ({user_id}, {new_chadscore});"
+        else:
+            query2 = f"UPDATE Chadscore SET chadscore = {new_chadscore} WHERE user_id = {user_id};"
         cursor.execute(query2)
         self.con.commit()
         cursor.close()
