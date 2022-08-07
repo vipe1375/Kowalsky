@@ -54,17 +54,6 @@ async def change_status():
     activities = [a1, a2, a3]
     await bot.change_presence(activity=rd.choice(activities))
 
-# Boucle de redémarrage des cogs
-@tasks.loop(seconds = 50)
-async def check_restart_cogs():
-    if t.localtime(t.time())[3] == 0:
-        if t.localtime(t.time())[4] == 0:
-            pass
-
-@tasks.loop(hours=24)
-async def restart_cogs():
-    return
-
 
 
 #----------------| INFOS |-----------------#
