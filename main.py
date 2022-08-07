@@ -63,7 +63,7 @@ async def check_restart_cogs():
 
 @tasks.loop(hours=24)
 async def restart_cogs():
-    pass
+    return
 
 
 
