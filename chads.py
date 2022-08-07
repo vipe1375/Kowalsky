@@ -13,9 +13,9 @@ intents = discord.Intents.default()
 intents.members = True
 
 # INFOS
-chads_adresses = {1: "/home/container/Pictures/chads/chad_1.jpg", 
-                 2: "/home/container/Pictures/chads/chad_2.jpeg", 
-                 3: "/home/container/Pictures/chads/chad_3.jpg", 
+chads_adresses = {1: "/home/container/Pictures/chads/chad_1.jpg",
+                 2: "/home/container/Pictures/chads/chad_2.jpeg",
+                 3: "/home/container/Pictures/chads/chad_3.jpg",
                  4: "/home/container/Pictures/chads/chad_4.jpg",
                  5: "/home/container/Pictures/chads/chad_5.jpeg",
                  6: "/home/container/Pictures/chads/chad_6.jpeg",
@@ -48,7 +48,7 @@ chads_names = {1: "Chad",
 
 chads_random = ["/home/container/Pictures/random_chads/chad1.png",
 "/home/container/Pictures/random_chads/chad2.jpeg",
-"/home/container/Pictures/random_chads/chad3.jpeg", 
+"/home/container/Pictures/random_chads/chad3.jpeg",
 "/home/container/Pictures/random_chads/chad4.jpeg",
 "/home/container/Pictures/random_chads/chad5.jpeg",
 "/home/container/Pictures/random_chads/chad6.jpeg",
@@ -118,7 +118,7 @@ def chad_pos(col, ind):
     for i in range(len(col)):
         if col[i][0] == ind:
             return i
-        
+
     return None
 
 def can_pass(c_id: int, etape: int) -> bool:
@@ -165,7 +165,7 @@ async def situation(ctx, sit):
         img = discord.File(fp = "/home/container/Pictures/chadroad/chadmontagne.jpg", filename = "image.png")
         p = "Ton Chad a fait une ptite balade pépouze, tu atteins donc **l'étape 2 !**"
         f = p
-    
+
     elif sit == 2:
         msg = "Ton Chad entre dans la forêt, quand soudain un écureuil méchant se dresse sur sa route ! Ton Chad doit lui niquer sa mère ! Va-t-il réussir ?"
         img = discord.File(fp = "/home/container/Pictures/chadroad/ecureuil.jpeg", filename = "image.png")
@@ -201,7 +201,7 @@ async def situation(ctx, sit):
         img = discord.File(fp = "/home/container/Pictures/chadroad/requin.jpeg", filename = "image.png")
         p = "Ton Chad a courageusement défendu son navire ! Tu passes à **l'étape 8 !**"
         f = "Le requin a graillé ton Chad, tu restes à l'étape 7..."
-    
+
     elif sit == 8:
         msg = "Ton Chad a traversé la rivière, mais une horde de flamands roses l'attaque ! Va-t-il manger du flamand rose ce soir ?"
         img = discord.File(fp = "/home/container/Pictures/chadroad/flamands_roses.jpeg", filename = "image.png")
@@ -286,7 +286,7 @@ async def situation(ctx, sit):
     embed.set_image(url="attachment://image.png")
     await ctx.send(file = img, embed = embed)
 
-        
+
 
     return p, f
 
@@ -313,7 +313,7 @@ class CommandsChads(commands.Cog):
 
             else:
                 embed = discord.Embed(title = "", color = bleu)
-                
+
                 txt = ""
                 for i in range(len(result)):
                     chad_id = result[i][0]
@@ -347,9 +347,11 @@ class CommandsChads(commands.Cog):
             msg = f""
             for i in range(len(lb)):
                 u = self.bot.get_user(lb[i][0])
-                msg += f"**{i+1}.** {i.name}, {lb[i][1]} chadscore\n\n"
+                if u != None:
+                    msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n\n"
             embed = discord.Embed(title = f"Classement général des collections", description = msg, color = bleu)
             await ctx.send(embed = embed)
+            
         elif opt == None:
             msg = f""
             for i in range(len(lb)):
@@ -359,8 +361,7 @@ class CommandsChads(commands.Cog):
             embed = discord.Embed(title = f"Classement des collections de {ctx.guild.name}", description = msg, color = bleu)
             await ctx.send(embed = embed)
 
-        
-          
+
     @commands.command()
     async def mychad(self, ctx, index):
         result = database_handler.get_collection(ctx.author.id)
@@ -376,7 +377,7 @@ class CommandsChads(commands.Cog):
                     await ctx.send("Voilà ton chad :", file = file)
                 else:
                     await ctx.send("t'as pas ce chad dsl")
-    
+
     @commands.command(aliases = ['gc'])
     @commands.cooldown(2,86400, commands.BucketType.user)
     async def getchad(self, ctx):
@@ -416,12 +417,12 @@ class CommandsChads(commands.Cog):
             database_handler.add_new_chad(ctx.author.id, c_id)
             file = discord.File(str(chads_adresses[c_id]))
             await ctx.send(f"gg ! t'as débloqué le **Chad de rang {c_id}** !", file = file)
-            
+
         else:
             database_handler.add_chad(ctx.author.id, c_id, 1)
             await ctx.send(f"t'as gagné un chad de rang {c_id} !")
         database_handler.update_chadscore(ctx.author.id)
-                
+
     @commands.command()
     async def upgrade(self, ctx, *, rank):
         member = ctx.author
@@ -441,7 +442,7 @@ class CommandsChads(commands.Cog):
                 await ctx.send("t'en a pas assez dsl, il t'en faut au moins 11")
         else:
             await ctx.send("t'as pas ce chad dsl")
-        
+
 
     @getchad.error
     async def getchad_error(self, ctx, error):
@@ -474,22 +475,22 @@ class CommandsChads(commands.Cog):
     @commands.command()
     async def routedeschads(self, ctx):
         desc = """
-        
+
         La Route des Chads est la quête ultime de tout être qui prétend au titre de Chad.
-        
+
         Elle consiste en un voyage jusqu'au sommet de la légendaire Chad Mountain, voyage peuplé de dangers et de mystères. Le voyageur doit passer avec succès les 20 étapes du voyage, afin de pouvoir accéder au sommet de la montagne et ainsi devenir un Chad.
-        
-        Tu veux tenter ta chance ? Alors choisis un des Chads de ta collection et fais en sorte qu'il passe les étapes jusqu'au sommet. Si ton Chad parvient à passer à l'étape suivante, tant mieux. Mais si par malheur il n'y parvient pas, alors l'aventure s'arrête pour lui, et ce Chad sera perdu à tout jamais. 
-        
+
+        Tu veux tenter ta chance ? Alors choisis un des Chads de ta collection et fais en sorte qu'il passe les étapes jusqu'au sommet. Si ton Chad parvient à passer à l'étape suivante, tant mieux. Mais si par malheur il n'y parvient pas, alors l'aventure s'arrête pour lui, et ce Chad sera perdu à tout jamais.
+
         Une fois là-haut, tu auras la Médaille de Chad.
-        
+
         Bonne chance mon reuf.
-        
+
         *indice : plus ton Chad est de rang élevé, plus il aura de chances de réussir les étapes.*"""
         embed = discord.Embed(title = "Route des chads", description= desc, color = bleu)
         await ctx.send(embed = embed)
 
-    
+
     @commands.command()
     async def start(self, ctx):
 
@@ -497,10 +498,10 @@ class CommandsChads(commands.Cog):
         if database_handler.get_etape(user.id) == [] or database_handler.get_etape(user.id) == None:
             database_handler.new_etape(user.id)
             await ctx.send("gg ! Tu viens de commencer la Route des Chads ! Bonne chance ! \n\nAstuce : fais `k.avance` pour tenter de passer à l'étape suivante.")
-        else: 
+        else:
             await ctx.send("T'as déjà commencé la Route des Chads")
 
-    
+
     @commands.cooldown(1, 86400, commands.BucketType.user)
     @commands.command()
     async def avance(self, ctx):
@@ -520,29 +521,29 @@ class CommandsChads(commands.Cog):
                     coll = database_handler.get_collection(user.id)
 
                     if has_chad(coll, c_id):
-                        
+
                         etape_act = database_handler.get_etape(user.id)[0][0]
 
                         # Choix de l'action en fonction de l'étape
 
                         p, f = await situation(ctx, etape_act)
-                        
+
                         if etape_act == 19:
                             await ctx.send("Vite, fais la commande qui joue la musique des Chads !")
                             cmd = await self.bot.wait_for("message", timeout = 10, check = checkMessage)
 
                             if cmd.content != "k.chadsong":
                                 etape_act = 190
-                        
+
                         await asyncio.sleep(3)
-                        
+
                         if can_pass(c_id, etape_act):
                             await ctx.send(p)
                             database_handler.up_etape(user.id)
                         else:
                             await ctx.send(f)
                             database_handler.add_chad(user.id, c_id, -1)
-                            
+
                     else:
                         await ctx.send("Tu n'as pas ce Chad dsl")
                         await self.avance.reset_cooldown(ctx)
@@ -566,7 +567,7 @@ class CommandsChads(commands.Cog):
     async def avance_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.send("tu peux avancer d'une seule étape par jour mon reuf, ton chad doit se reposer")
-    
+
 
     @commands.command(aliases = ['lb'])
     @commands.guild_only()
@@ -598,7 +599,7 @@ class CommandsChads(commands.Cog):
                         txt = txt + f"**{user.name} :** étape {lb[i][1]}\n\n"
             embed = discord.Embed(title = f"Classement de la Route des Chads dans {guild.name}", color = bleu, description = txt)
             await ctx.send(embed = embed)
-        
+
         else:
             await ctx.send("Cet argument n'est pas reconnu")
 
@@ -611,8 +612,8 @@ class CommandsChads(commands.Cog):
             def checkMessage(message):
                 return message.author == ctx.message.author and ctx.message.channel == message.channel
 
-            
-            
+
+
             await ctx.send(f"tu veux donner un chad de quel rang à **{member2.name}** ?")
             chad_given = await self.bot.wait_for("message", timeout = 20, check = checkMessage)
             chad_given = int(chad_given.content)
@@ -629,7 +630,7 @@ class CommandsChads(commands.Cog):
 
             member_col = database_handler.get_collection(member.id)
             member2_col = database_handler.get_collection(member2.id)
-            
+
             if has_chad(member_col, chad_given) and has_chad(member2_col, chad_asked):
                 pos1 = chad_pos(member_col, chad_given)
                 pos2 = chad_pos(member2_col, chad_asked)
@@ -644,7 +645,7 @@ class CommandsChads(commands.Cog):
                     action_row_buttons = create_actionrow(*boutons)
 
                     channel2 = await member2.create_dm()
-                    embed = discord.Embed(title = "", color = bleu, description = f"veux tu donner un chad de **rang {chad_asked}** et recevoir un chad de **rang {chad_given}** de la part de **{member.name} **?\n\nréponds par `oui` pour accepter, et réponds n'importe quoi pour refuser")
+                    embed = discord.Embed(title = "", color = bleu, description = f"veux tu donner un chad de **rang {chad_asked}** et recevoir un chad de **rang {chad_given}** de la part de **{member.name} **?")
                     embed.set_footer(text = "tu as 5 minutes pour répondre")
 
                     msg = await channel2.send(embed = embed, components = [action_row_buttons])
@@ -655,16 +656,16 @@ class CommandsChads(commands.Cog):
                         return m.origin_message.id == msg.id
 
                     confirmation = await wait_for_component(self.bot, components = action_row_buttons, check = check_buttons, timeout = 300)
-                    
+
                     await confirmation.defer(ignore=True)
-            
+
                     if confirmation.custom_id == "1":
                         # On ajoute les chads
                         if has_chad(member2_col, chad_given):
                             database_handler.add_chad(member2.id, chad_given)
                         else:
                             database_handler.add_new_chad(member2.id, chad_given)
-                        
+
                         if has_chad(member_col, chad_asked):
                             database_handler.add_chad(member.id, chad_asked)
                         else:
@@ -682,10 +683,9 @@ class CommandsChads(commands.Cog):
                         channel = await member.create_dm()
                         await channel.send(f"échange refusé par {member2.name}")
                         await channel2.send(f"échange refusé")
-                else: 
+                else:
                     await ctx.send("Vous avez pas assez de chads dsl")
             else:
                 await ctx.send("vous avez pas les bons chads dsl")
         else:
             await ctx.send("ben bien sûr fais des échanges tout seul")
-    

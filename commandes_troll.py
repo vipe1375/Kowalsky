@@ -13,7 +13,7 @@ import os
 from database_handler_k import DatabaseHandler
 database_handler = DatabaseHandler("database_kowalsky.db")
 
-# ------------ INFOS ---------------- # 
+# ------------ INFOS ---------------- #
 
 listeOof = os.listdir('/home/container/Pictures/oof')
 
@@ -131,13 +131,13 @@ So amazing (Shitted my pants)"""]
 
 liste_sus = os.listdir('/home/container/Pictures/sus')
 
-                      
+
 liste_choix = [liste_random_words, liste_random_pics]
-            
+
 liste_commandes = {'quoi': 1, 'feur': 1, 'tg' : 2, 'ph' : 3, 'randomping' : 4, 'csc' : 5, 'saydm' : 6, 'haagrah' : 7, 'ratio': 8, 'sus': 9, 'cheh': 10, 'flop': 11, 'nwar': 12}
 
-liste_gifs = ["https://tenor.com/view/dancing-black-big-gif-20472579", 
-"https://tenor.com/view/dance-move-black-gif-18553004", 
+liste_gifs = ["https://tenor.com/view/dancing-black-big-gif-20472579",
+"https://tenor.com/view/dance-move-black-gif-18553004",
 "https://tenor.com/view/black-man-dance-happy-dance-gif-15340006",
 "https://tenor.com/view/laugh-dance-black-kid-get-it-killing-it-gif-10743055",
 "https://tenor.com/view/black-dance-black-twerk-gif-20765436"]
@@ -174,6 +174,10 @@ class CommandesTroll(commands.Cog):
     def __init__(self, bot, version):
         self.bot = bot
         self.version = version
+
+    @commands.command()
+    async def k(self, ctx):
+        await ctx.send("caca :poop:")
 
     @commands.command()
     @commands.guild_only()
@@ -223,11 +227,11 @@ class CommandesTroll(commands.Cog):
             await ctx.send(file=file)
         else:
             await ctx.send("Cette commande est désactivée ici :x:")
-            
-        
-        
+
+
+
     # TG :
-        
+
     @commands.command()
     @commands.guild_only()
     async def tg(self, ctx, member : discord.Member):
@@ -248,7 +252,7 @@ class CommandesTroll(commands.Cog):
                 await ctx.send(rd.choice(listeTG))
         else:
             await ctx.send("Cette commande est désactivée ici :x:")
-            
+
 
     # ph :
 
@@ -261,14 +265,14 @@ class CommandesTroll(commands.Cog):
             await ctx.send("https://www.pornhub.com")
         else:
             await ctx.send("Cette commande est désactivée ici :x:")
-        
-      
+
+
     # coucou :
 
     @commands.command(aliases = ["salut", "bonjour"])
     async def coucou(self, ctx):
         await ctx.send("salut mon reuf")
-        
+
 
     # saydm :
 
@@ -289,7 +293,7 @@ class CommandesTroll(commands.Cog):
             await ctx.send(f"doucement wsh, tu pourras refaire cette commande dans {int(error.retry_after)} secondes")
 
 
-        
+
     # Randomping :
 
     @commands.command()
@@ -310,8 +314,8 @@ class CommandesTroll(commands.Cog):
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.send(f"doucement wsh, tu pourras refaire cette commande dans {int(error.retry_after)} secondes")
 
-        
-        
+
+
     # Racism :
 
     @commands.command(aliases = ['racism', 'raciste', 'racisme'])
@@ -332,15 +336,15 @@ class CommandesTroll(commands.Cog):
             await ctx.send("là frr c'est freewin t'as "+ str(mu) + "-" + str(100-mu))
         else:
             await ctx.send("ça passe c'est un "+ str(mu) + "-" + str(100-mu) + " chill en vrai")
-            
-            
+
+
     # Stylé :
 
     @commands.command()
     async def stylé(self, ctx):
         await ctx.send("de ouf :sunglasses:")
-        
-        
+
+
     # csc :
 
     @commands.command()
@@ -354,13 +358,13 @@ class CommandesTroll(commands.Cog):
             await ctx.send(file=file)
         else:
             await ctx.send("Cette commande est désactivée ici :x:")
-    
+
     @csc.error
     async def csc_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.send(f"doucement wsh, tu pourras refaire cette commande dans {int(error.retry_after)}")
 
-    
+
     # ratio:
 
     @commands.command()
@@ -375,15 +379,15 @@ class CommandesTroll(commands.Cog):
                 msg = await ctx.send(f"contre ratio {ctx.author.mention} + flop + adoption :cold_face::cold_face::cold_face::cold_face::moyai::moyai::moyai::moyai::sunglasses::sunglasses::sunglasses::sunglasses:")
                 await msg.add_reaction("❤️")
 
-            
+
             elif user == ctx.author:
                 await ctx.send("le boug s'auto-ratio quoi :cold_face::cold_face::cold_face::cold_face::moyai::moyai::moyai::moyai:")
 
             else:
                 msg = await ctx.send(f"L + ratio {user.mention} :cold_face::cold_face::cold_face::cold_face::moyai::moyai::moyai::moyai::sunglasses::sunglasses::sunglasses::sunglasses:")
                 await msg.add_reaction("❤️")
-           
-    
+
+
     @commands.command()
     @commands.guild_only()
     async def flop(self, ctx):
@@ -391,12 +395,12 @@ class CommandesTroll(commands.Cog):
         if validation:
             file = discord.File("/home/container/Pictures/grenouille.jpeg")
             await ctx.send("flop + contre ratio + grenouille de la honte :fire::fire::fire::sunglasses::sunglasses::sunglasses::cold_face::cold_face::cold_face:", file = file)
-    
-    
+
+
     # sus:
 
-    @commands.command()  
-    @commands.guild_only()      
+    @commands.command()
+    @commands.guild_only()
     async def sus(self, ctx):
         validation = check_command(ctx.guild.id, 'sus')
         if validation:
@@ -406,5 +410,3 @@ class CommandesTroll(commands.Cog):
             await ctx.send(file = file, embed = embed)
         else:
             await ctx.send("Cette commande est désactivée ici :pensive:")
-        
-

@@ -14,14 +14,68 @@ def is_vipe(id):
     return id == 691380397673545828
 
 
+
 # ------------------- COMMANDES ---------------#
 
 class CommandesBase(commands.Cog):
     def __init__(self, bot: commands.Bot, version):
         self.bot = bot
         self.version = version
-   
+
     
+    
+    # Suggestion :
+
+    @commands.command()
+    @commands.dm_only()
+    async def suggestion(self, ctx, *, texte = None):
+        channel = self.bot.get_channel(944564263652057158)
+
+        def checkMessage(message):
+            return message.author == ctx.message.author and ctx.message.channel == message.channel
+
+        if texte == None:
+            await ctx.send(f"{ctx.author.mention}, quel est le contenu de ta suggestion ? Réponds 'cancel' pour annuler")
+            texte = await self.bot.wait_for("message", timeout = 60, check = checkMessage)
+
+            embed = discord.Embed(title = "Ta suggestion a été envoyée !", color = 0x2BE4FF)
+            await ctx.send(embed = embed)
+            await channel.send(f"suggestion de {ctx.author.name} : {texte.content}")
+
+        elif texte == "cancel" or texte == "Cancel":
+            await ctx.send("Commande annulée")
+        else:
+            embed = discord.Embed(title = "Ta suggestion a été envoyée !", color = 0x2BE4FF)
+            await ctx.send(embed = embed)
+            await channel.send(f"suggestion de {ctx.author.name} : {texte}")
+
+
+
+    # Bot info :
+
+    @commands.command(aliases = ['infobot'])
+    async def botinfo(self, ctx):
+        txt = """**Développeur :** c'est vipe le bg
+
+        **Création :** janvier 2022 ambiance covid
+
+        **Premiers testeurs :** les bg de CRFR bis, vous savez qui vous êtes
+
+        **Graphistes officiels :** dori et zamass, merci à eux
+
+        **Chad Kings :** Nayde fut le premier à réunir les 10 chads, near et pépito furent les premiers à atteindre le Temple des Chads.
+
+        **Information importante :** le bot est extrêmement raciste"""
+        embed = discord.Embed(title = "Infos sur le bot", color = bleu, description = txt)
+        embed.set_footer(text = "version actuelle : " + self.version)
+        await ctx.send(embed = embed)
+
+
+    # Ping:
+    @commands.command()
+    @commands.guild_only()
+    async def ping(self, ctx):
+        await ctx.send(self.bot.mention)
 
 
      # Serverinfo :
@@ -43,7 +97,7 @@ class CommandesBase(commands.Cog):
         servDescription = server.description
         nbMembres = server.member_count
         nom = server.name
-        
+
         #Création de l'embed:
         embed = discord.Embed(title = f"**Informations de {server.name}**", color = bleu)
         embed.set_thumbnail(url = ctx.guild.icon_url)
@@ -51,8 +105,8 @@ class CommandesBase(commands.Cog):
         embed.add_field(name = "Salons textuels", value = txtTextChans, inline = False)
         embed.add_field(name = "Salons vocaux", value = txtVoiceChans, inline = False)
         await ctx.send(embed = embed)
-        
-        
+
+
     # Say :
 
     @commands.command()
@@ -61,10 +115,10 @@ class CommandesBase(commands.Cog):
         if texte == "@everyone":
             await ctx.send("nan c pa koul")
         else:
-            
+
             await ctx.send(texte)
-        
-        
+
+
     # Rate :
 
     @commands.command()
@@ -74,25 +128,25 @@ class CommandesBase(commands.Cog):
         await ctx.send(f"Je note `{texte2}` {note}/10")
 
 
-    
-            
-            
+
+
+
     # Support :
-            
+
     @commands.command()
     async def support(self, ctx):
         embed = discord.Embed(title = "tiens stv ya un serveur d'aide", color = bleu, description = "[clique ici mon reuf](https://discord.gg/f2xBTAxB6W)")
         await ctx.send(embed = embed)
-        
-        
+
+
     # Invite :
-    
+
     @commands.command()
     async def invite(self, ctx):
         embed = discord.Embed(title = "Tu veux m'ajouter à un serveur ?", color = bleu, description = "[clique ici mon reuf](https://discord.com/api/oauth2/authorize?client_id=926864538681368626&permissions=8&scope=bot)")
         await ctx.send(embed = embed)
 
-    
+
     # Update:
 
     @commands.command()
@@ -115,15 +169,15 @@ Vous ne pouvez suivre les mises à jour que dans un salon par serveur""")
             if database_handler.is_following(ctx.guild.id):
                 await ctx.send("Ce serveur suit déjà les mises à jour")
             else:
-                database_handler.add_channel(ctx.guild.id, channel.id)  
+                database_handler.add_channel(ctx.guild.id, channel.id)
                 await ctx.send(f"Les mises à jour du bot seront publiées dans {channel.mention} !")
 
         elif y == "unfollow":
             database_handler.delete_channel(ctx.guild.id)
-            await ctx.send('Les mises à jour ne seront plus publiées dans ce serveur') 
+            await ctx.send('Les mises à jour ne seront plus publiées dans ce serveur')
 
 
-    
+
 
 
 
@@ -138,8 +192,8 @@ Vous ne pouvez suivre les mises à jour que dans un salon par serveur""")
                 return message.author == ctx.message.author and ctx.message.channel == message.channel
 
             def checkMessage2(message):
-                return member == ctx.author 
-            
+                return member == ctx.author
+
             await ctx.send(f"tu veux donner un chad de quel rang à **{member2.name}** ?")
             chad_given = await self.bot.wait_for("message", timeout = 20, check = checkMessage)
             chad_given = int(chad_given.content)
@@ -169,16 +223,16 @@ Vous ne pouvez suivre les mises à jour que dans un salon par serveur""")
                     confirmation = await self.bot.wait_for('message', timeout = 300, check = checkMessage2)
                     confirmation = str(confirmation.content)
                     confirmation.lower()
-                    
+
                     await ctx.send(f"j'ai envoyé un dm à {member2.name} pour savoir s'il veut échanger, jte dm bientôt pour te dire s'il accepte ou pas", delete_after = 10)
-            
+
                     if confirmation == "oui":
                         database_handler.remove_chad(member2.id, chad_asked)
                         if has_chad(member2_col, chad_given):
                             database_handler.add_chad(member2.id, chad_given)
                         else:
                             database_handler.add_new_chad(member2.id, chad_given)
-                        
+
                         database_handler.remove_chad(member.id, chad_given)
                         if has_chad(member_col, chad_asked):
                             database_handler.add_chad(member.id, chad_asked)
@@ -187,22 +241,22 @@ Vous ne pouvez suivre les mises à jour que dans un salon par serveur""")
                         channel = await member.create_dm()
                         await channel.send(f"échange réussi ! {member2.name} t'a bien donné un chad de rang {chad_asked}, et tu as donné un chad de rang {chad_given} !")
                         await channel2.send(f"échange réussi ! {member.name} t'a bien donné un chad de rang {chad_given}, et tu as donné un chad de rang {chad_asked} !")
-                    
+
                     else:
 
                         channel = await member.create_dm()
                         await channel.send(f"échange refusé par {member2.name}")
                         await channel2.send(f"échange refusé")
-                else: 
+                else:
                     await ctx.send("Vous avez pas assez de chads dsl")
             else:
                 await ctx.send("vous avez pas les bons chads dsl")
         else:
             await ctx.send("ben bien sûr fais des échanges tout seul")
     """
-                
-                
-                
+
+
+
 
 
 

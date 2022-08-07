@@ -35,13 +35,13 @@ version = "3.16.26"
 
 @bot.event
 async def on_ready():
-    channel = bot.get_channel(971870035624726628)
-    
+    channel = bot.get_channel(logs_channel_id)
+
     await channel.send("restart")
     change_status.start()
 
     database_handler.set_finishers()
-    
+
     print("\nchuis prêt mon reuf lets gooo, heure : ", str(str(t.localtime(t.time())[3]) + 'h' + str(t.localtime(t.time())[4])), ", version : ", version,"\n")
 
 
@@ -67,6 +67,10 @@ vert = 0x00FF66       #Unban/unmute/free
 rouge = 0xFF2525      #Ban/mute/goulag
 orange = 0xFFAA26     #Erreur
 
+# id des channels:
+logs_channel_id = 971870035624726628
+errors_channel_id = 1004319125587378186
+
 
 # ------------ FONCTIONS ------------ #
 
@@ -82,7 +86,7 @@ def check_command(guild_id, command_name):
             return True
         else:
             return False
-            
+
 # Vérification de la hiérarchie des rôles
 
 def check_hierarchy(member1 : discord.Member, member2 : discord.Member) -> bool:
@@ -161,7 +165,7 @@ async def help(ctx, *, theme = None):
         embed.set_footer(text = "version actuelle : " + version)
         await ctx.send(embed = embed, file = file)
 
-        
+
 
 # Activation / désactivation de commandes
 @bot.command()
@@ -197,50 +201,9 @@ async def check(ctx, command_name):
 async def donneheurefdp(ctx):
     await ctx.send(str(str(t.localtime(t.time())[3]) + 'h' + str(t.localtime(t.time())[4])))
 
-# Suggestion :
-
-@bot.command()
-@commands.dm_only()
-async def suggestion(ctx, *, texte = None):
-    channel = bot.get_channel(944564263652057158)
-
-    def checkMessage(message):
-        return message.author == ctx.message.author and ctx.message.channel == message.channel
-
-    if texte == None:
-        await ctx.send(f"{ctx.author.mention}, quel est le contenu de ta suggestion ? Réponds 'cancel' pour annuler")
-        texte = await bot.wait_for("message", timeout = 20, check = checkMessage)
-
-        embed = discord.Embed(title = "Ta suggestion a été envoyée !", color = 0x2BE4FF)
-        await ctx.send(embed = embed)
-        await channel.send(f"suggestion de {ctx.author.name} : {texte.content}")
-
-    elif texte == "cancel" or texte == "Cancel":
-        await ctx.send("Commande annulée")
-    else:
-        embed = discord.Embed(title = "Ta suggestion a été envoyée !", color = 0x2BE4FF)
-        await ctx.send(embed = embed)
-        await channel.send(f"suggestion de {ctx.author.name} : {texte}")
 
 
-# Bot info :
 
-@bot.command(aliases = ['infobot'])
-async def botinfo(ctx):
-    txt = """**Développeur :** c'est vipe le bg
-    
-    **Création :** janvier 2022 ambiance covid
-    
-    **Premiers testeurs :** les bg de CRFR bis, vous savez qui vous êtes
-    
-    **Graphistes officiels :** dori et zamass, merci à eux
-    
-    **Chad Kings :** Nayde fut le premier à réunir les 10 chads, near et pépito furent les premiers à atteindre le Temple des Chads.
-    
-    **Information importante :** le bot est extrêmement raciste"""
-    embed = discord.Embed(title = "Infos sur le bot", color = bleu, description = txt)
-    embed.set_footer(text = "version actuelle : " + version)
-    await ctx.send(embed = embed)
 
 
 
@@ -299,13 +262,20 @@ async def on_command_error(ctx, error):
             embed10 = discord.Embed(description = "y'a une erreur mais je sais pas trop quoi :x:", color = orange)
             await ctx.send(embed = embed10)
     else:
-        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+        l = traceback.format_exception(type(error), error, error.__traceback__)
+        msg = ""
+        for i in l:
+            msg += i
+        channel = bot.get_channel(errors_channel_id)
+        await channel.send(msg)
+
+        
 
 
 @bot.event
 async def on_guild_join(guild):
-    channel = bot.get_channel(971870035624726628)
-    
+    channel = bot.get_channel(logs_channel_id)
+
     await channel.send(f"nouveau serveur : {guild.name}")
 
 
@@ -316,48 +286,5 @@ bot.add_cog(chads.CommandsChads(bot, version))
 bot.add_cog(commandes_admin.CommandesAdmin(bot, version))
 bot.run(token_kowalsky)
 
-       
 
-"""
-@bot.command()
-@commands.has_permissions(administrator = True)
-async def welcome(ctx):
-    # checks mess/emoji
-    def checkMessage(message):
-        return message.author == ctx.message.author and ctx.message.channel == message.channel
-    def checkEmoji(reaction, user):
-        return ctx.message.author == user and message.id == reaction.message.id and (str(reaction.emoji) == "❌" or str(reaction.emoji) == "1⃣" or str(reaction.emoji) == "2⃣" or str(reaction.emoji) == "3⃣")
 
-    message = await ctx.send(f"{ctx.author.name}, que veux-tu faire ?\n\n:one: Changer le salon de bienvenue\n\n:two: Changer le message de bienvenue\n\n:three: Activer/désactiver le message de bienvenue\n\n:x: Quitter")
-    await message.add_reaction("1⃣")
-    await message.add_reaction("2⃣")
-    await message.add_reaction("3⃣")
-    await message.add_reaction("❌")
-    reaction, user = await bot.wait_for("reaction_add", timeout = 20, check = checkEmoji)
-
-    # changer le salon :
-    if reaction.emoji == "1⃣":
-        await ctx.send("Dans quel salon veux-tu recevoir les messages de bienvenue ?")
-        texte = await bot.wait_for("message", timeout = 30, check = checkMessage)
-        channel_id = int(texte.content[2:-1])
-        database_handler.edit_channel(ctx.guild.id, channel_id)
-        await ctx.send("Le salon a bien été changé !")
-
-    # changer le message :
-    elif reaction.emoji == "2⃣":
-        await ctx.send("Quel est ton nouveau message de bienvenue ?\n\nVariables : `{member.mention}` -> mention du membre, `{member.name}` -> nom du membre")
-        mess = await bot.wait_for("message", timeout = 60, check = checkMessage)
-        new_mess = mess.content
-        database_handler.edit_channel(ctx.guild.id, new_mess)
-        await ctx.send("Le message a bien été changé !")
-
-    # activer/désactiver :
-    elif reaction.emoji == "3⃣":
-        if database_handler.w_get(ctx.guild.id):
-            pass
-        await ctx.send("Quel est ton nouveau message de bienvenue ?\n\nVariables : `{member.mention}` -> mention du membre, `{member.name}` -> nom du membre")
-        mess = await bot.wait_for("message", timeout = 60, check = checkMessage)
-        new_mess = mess.content
-        database_handler.edit_channel(ctx.guild.id, new_mess)
-        await ctx.send("Le message a bien été changé !")
-"""
