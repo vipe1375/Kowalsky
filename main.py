@@ -181,7 +181,7 @@ async def help(ctx, *, theme = None):
         await ctx.send(embed = embed, file = file)
 
 
-@commands.command()
+@bot.command()
 async def restart(ctx):
     if commandes_admin.is_vipe(ctx.author.id):
         bot.reload_extension('CommandesBase')
