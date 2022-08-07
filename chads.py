@@ -347,7 +347,7 @@ class CommandsChads(commands.Cog):
         lb = database_handler.lb_chadscore()
         if opt == 'g':
             msg = f""
-            for i in range(len(lb)):
+            for i in range(11):
                 u = self.bot.get_user(lb[i][0])
                 if u != None:
                     msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n\n"
@@ -355,11 +355,13 @@ class CommandsChads(commands.Cog):
             await ctx.send(embed = embed)
             
         elif opt == None:
+            y = 0
             msg = f""
-            for i in range(len(lb)):
+            for i in range(11):
                 user = ctx.guild.get_member(lb[i][0])
                 if user != None:
-                    msg += f"**{i+1}.** {user.name}, {lb[i][1]} chadscore\n\n"
+                    msg += f"**{y+1}.** {user.name}, {lb[i][1]} chadscore\n\n"
+                    y += 1
             embed = discord.Embed(title = f"Classement des collections de {ctx.guild.name}", description = msg, color = bleu)
             await ctx.send(embed = embed)
 

@@ -310,10 +310,10 @@ async def on_guild_join(guild):
 
 
 
-bot.add_cog(commandes_base.CommandesBase(bot, version))
-bot.add_cog(commandes_troll.CommandesTroll(bot, version))
-bot.add_cog(chads.CommandsChads(bot, version))
-bot.add_cog(commandes_admin.CommandesAdmin(bot, version))
+bot.add_cog(commandes_base.CommandesBase(bot))
+bot.add_cog(commandes_troll.CommandesTroll(bot))
+bot.add_cog(chads.CommandsChads(bot))
+bot.add_cog(commandes_admin.CommandesAdmin(bot))
 bot.run(token_kowalsky)
 
 
