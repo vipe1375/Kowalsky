@@ -19,6 +19,7 @@ import commandes_base
 import chads
 import commandes_admin
 from token_k import token_kowalsky
+from version_k import version
 
 # database
 from database_handler_k import DatabaseHandler
@@ -31,7 +32,6 @@ bot = commands.Bot(command_prefix = "k.", intents = intents)
 bot.remove_command("help")
 
 # démarrage du bot
-version = commandes_base.version
 
 @bot.event
 async def on_ready():

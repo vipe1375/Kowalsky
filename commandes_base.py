@@ -10,7 +10,7 @@ database_handler = DatabaseHandler("database_kowalsky.db")
 intents = discord.Intents.default()
 intents.members = True
 
-from token_k import version
+from version_k import version
 
 def is_vipe(id):
     return id == 691380397673545828

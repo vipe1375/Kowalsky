@@ -1,4 +1,3 @@
-from imaplib import Commands
 import discord
 from discord.ext import commands
 
