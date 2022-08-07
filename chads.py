@@ -359,7 +359,7 @@ class CommandsChads(commands.Cog):
             for i in range(len(lb)):
                 user = ctx.guild.get_member(lb[i][0])
                 if user != None:
-                    msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n\n"
+                    msg += f"**{i+1}.** {user.name}, {lb[i][1]} chadscore\n\n"
             embed = discord.Embed(title = f"Classement des collections de {ctx.guild.name}", description = msg, color = bleu)
             await ctx.send(embed = embed)
 
