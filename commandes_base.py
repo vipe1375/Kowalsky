@@ -10,19 +10,35 @@ database_handler = DatabaseHandler("database_kowalsky.db")
 intents = discord.Intents.default()
 intents.members = True
 
+from token_k import version
+
 def is_vipe(id):
     return id == 691380397673545828
 
+def setup(bot):
+    bot.add_cog(CommandesBase(bot))
 
 
 # ------------------- COMMANDES ---------------#
 
 class CommandesBase(commands.Cog):
-    def __init__(self, bot: commands.Bot, version):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.version = version
+        #self.version = version
 
-    
+    @commands.command()
+    async def post(self, ctx, *, msg):
+        if is_vipe(ctx.author.id):
+            channels = database_handler.get_channels()
+            msg = str(msg + "\n\n disponible à partir de minuit")
+            embed = discord.Embed(title = "Mise à jour", color = bleu, description = msg)
+            embed.set_footer(text = f"version actuelle : {version}")
+            for i in channels:
+                chan = self.bot.get_channel(i[0])
+                await chan.send(embed = embed)
+            await ctx.send("message posté")
+        else:
+            await ctx.send("t'as pas le droit dsl")
     
     # Suggestion :
 
@@ -67,7 +83,7 @@ class CommandesBase(commands.Cog):
 
         **Information importante :** le bot est extrêmement raciste"""
         embed = discord.Embed(title = "Infos sur le bot", color = bleu, description = txt)
-        embed.set_footer(text = "version actuelle : " + self.version)
+        embed.set_footer(text = "version actuelle : " + version)
         await ctx.send(embed = embed)
 
 

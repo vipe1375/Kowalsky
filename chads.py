@@ -12,6 +12,9 @@ database_handler = DatabaseHandler("database_kowalsky.db")
 intents = discord.Intents.default()
 intents.members = True
 
+def setup(bot):
+    bot.add_cog(CommandsChads(bot))
+
 # INFOS
 chads_adresses = {1: "/home/container/Pictures/chads/chad_1.jpg",
                  2: "/home/container/Pictures/chads/chad_2.jpeg",
@@ -297,9 +300,8 @@ async def situation(ctx, sit):
 
 class CommandsChads(commands.Cog):
 
-    def __init__(self, bot, version) -> None:
+    def __init__(self, bot) -> None:
         self.bot = bot
-        self.version = version
 
 # collection :
 

@@ -1,3 +1,4 @@
+from imaplib import Commands
 import discord
 from discord.ext import commands
 
@@ -10,13 +11,15 @@ vert = 0x00FF66 #Unban/unmute/free
 rouge = 0xFF2525 #Ban/mute/goulag
 orange = 0xFFAA26 #Erreur
 
+def setup(bot):
+    bot.add_cog(CommandesAdmin(bot))
+
 def is_vipe(id):
     return id == 691380397673545828
 
 class CommandesAdmin(commands.Cog):
-    def __init__(self, bot: commands.Bot, version):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.version = version
 
     # Testmod
         
@@ -38,19 +41,7 @@ class CommandesAdmin(commands.Cog):
         database_handler.setup()
 
 
-    @commands.command()
-    async def post(self, ctx, *, msg):
-        if is_vipe(ctx.author.id):
-            channels = database_handler.get_channels()
-            msg = str(msg + "\n\n disponible à partir de minuit")
-            embed = discord.Embed(title = "Mise à jour", color = bleu, description = msg)
-            embed.set_footer(text = f"version actuelle : {self.version}")
-            for i in channels:
-                chan = self.bot.get_channel(i[0])
-                await chan.send(embed = embed)
-            await ctx.send("message posté")
-        else:
-            await ctx.send("t'as pas le droit dsl")
+   
 
     
     @commands.command()

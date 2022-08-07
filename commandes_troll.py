@@ -13,6 +13,9 @@ import os
 from database_handler_k import DatabaseHandler
 database_handler = DatabaseHandler("database_kowalsky.db")
 
+def setup(bot):
+    bot.add_cog(CommandesTroll(bot))
+
 # ------------ INFOS ---------------- #
 
 listeOof = os.listdir('/home/container/Pictures/oof')
@@ -171,9 +174,8 @@ def is_vipe_or_bot(id):
 
 
 class CommandesTroll(commands.Cog):
-    def __init__(self, bot, version):
+    def __init__(self, bot):
         self.bot = bot
-        self.version = version
 
     @commands.command()
     async def k(self, ctx):

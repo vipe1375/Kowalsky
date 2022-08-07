@@ -31,7 +31,7 @@ bot = commands.Bot(command_prefix = "k.", intents = intents)
 bot.remove_command("help")
 
 # démarrage du bot
-version = "3.16.26"
+version = commandes_base.version
 
 @bot.event
 async def on_ready():
@@ -59,11 +59,15 @@ async def change_status():
 async def check_restart_cogs():
     if t.localtime(t.time())[3] == 0:
         if t.localtime(t.time())[4] == 0:
-            pass
+            restart_cogs.start()
+            check_restart_cogs.stop()
 
 @tasks.loop(hours=24)
 async def restart_cogs():
-    return
+    bot.reload_extension('CommandesBase')
+    bot.reload_extension('CommandesAdmin')
+    bot.reload_extension('CommandesTroll')
+    bot.reload_extension('CommandsChads')
 
 
 
