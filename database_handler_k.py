@@ -172,7 +172,7 @@ class DatabaseHandler():
 
     def upgrade_chad(self, user_id, chad_id):
         cursor = self.con.cursor()
-        query = f"UPDATE Collection SET number = number - 10 WHERE user_id = {user_id} AND chad_id = {chad_id};"
+        query = f"UPDATE Collection SET number = number - 5 WHERE user_id = {user_id} AND chad_id = {chad_id};"
         cursor.execute(query)
         self.con.commit()
         cursor.close()

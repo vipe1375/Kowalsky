@@ -474,7 +474,7 @@ class CommandsChads(commands.Cog):
         collection = database_handler.get_collection(member.id)
         if has_chad(collection, rank):
             pos = chad_pos(collection, rank)
-            if collection[pos][1] > 10:
+            if collection[pos][1] > 5:
                 database_handler.upgrade_chad(member.id, rank)
                 if has_chad(collection, rank+1):
                     database_handler.add_chad(member.id, rank + 1, 1)
@@ -483,7 +483,7 @@ class CommandsChads(commands.Cog):
                 await ctx.send(f"bien joué ! chad amélioré au rang {rank+1} !")
                 database_handler.update_chadscore(ctx.author.id)
             else:
-                await ctx.send("t'en a pas assez dsl, il t'en faut au moins 11")
+                await ctx.send("t'en a pas assez dsl, il t'en faut au moins 6")
         else:
             await ctx.send("t'as pas ce chad dsl")
 
