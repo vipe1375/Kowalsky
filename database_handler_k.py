@@ -1,10 +1,12 @@
 import os
 import sqlite3
 
+l = [5, 6, 7, 12, 19, 25, 37, 75, 124, 373]
+
 def get_chadscore(result):
     chadscore = 0
-    for i in result:
-        chadscore += i[0]*i[1]
+    for i in range(len(result)):
+        chadscore += result[i][0]*result[i][1]*l[i]
     return chadscore
 
 
