@@ -39,6 +39,7 @@ async def on_ready():
 
     await channel.send("restart")
     change_status.start()
+    check_restart_cogs.start()
 
     database_handler.set_finishers()
 

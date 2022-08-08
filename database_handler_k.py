@@ -251,7 +251,6 @@ class DatabaseHandler():
         cursor.execute(query)
         self.con.commit()
         cursor.close()
-        print("vainqueurs chadroad ok")
 
     
 # ------------------ Testmod --------------#
