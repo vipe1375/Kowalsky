@@ -454,7 +454,7 @@ class CommandsChads(commands.Cog):
         elif nbe <= 370:
             c_id = 9
 
-        elif nbe <= 372:
+        elif nbe <= 373:
             c_id = 10
 
         if has_chad_bis(result, c_id) == False:
