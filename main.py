@@ -286,18 +286,20 @@ async def on_command_error(ctx, error):
             embed10 = discord.Embed(description = "y'a une erreur mais je sais pas trop quoi :x:", color = orange)
             await ctx.send(embed = embed10)
             l = traceback.format_exception(type(error), error, error.__traceback__)
-            msg = ""
+            msg = "`"
             for i in l:
                 msg += i
             channel = bot.get_channel(errors_channel_id)
+            msg += "`"
             await channel.send(msg)
     else:
 
         l = traceback.format_exception(type(error), error, error.__traceback__)
-        msg = "Erreur venant du testmod:\n"
+        msg = "Erreur venant du testmod:\n`"
         for i in l:
             msg += i
         channel = bot.get_channel(errors_channel_id)
+        msg += "`"
         await channel.send(msg)
 
         
