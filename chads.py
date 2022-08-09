@@ -357,7 +357,7 @@ class CommandsChads(commands.Cog):
                 u = self.bot.get_user(lb[i][0])
                 if u != None:
                     if u.id == ctx.author.id:
-                        msg += f"**{i+1}. {u.name}**, {lb[i][1]} chadscore :blue_circle:\n\n"
+                        msg += f":blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore \n\n"
                         author_in_top = True
                     else:
                         msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n\n"
@@ -366,7 +366,7 @@ class CommandsChads(commands.Cog):
                 for i in range(11, len(lb)):
                     u = self.bot.get_user(lb[i][0])
                     if u == ctx.author:
-                        msg += f"...\n\n**{i+1}. {u.name}**, {lb[i][1]} chadscore :blue_circle:"
+                        msg += f"...\n\n:blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore "
                         break
 
             embed = discord.Embed(title = f"Classement général des collections", description = msg, color = bleu)
@@ -382,7 +382,7 @@ class CommandsChads(commands.Cog):
                     user = ctx.guild.get_member(lb[i][0])
                     if user != None:
                         if user == ctx.author:
-                            msg += f"**{y+1}. {user.name}**, {lb[i][1]} chadscore :blue_circle:\n\n"
+                            msg += f":blue_circle: **{y+1}.** {user.name}, {lb[i][1]} chadscore \n\n"
                             author_in_top = True
                         else:
                             msg += f"**{y+1}.** {user.name}, {lb[i][1]} chadscore\n\n"
@@ -397,7 +397,7 @@ class CommandsChads(commands.Cog):
                     u = ctx.guild.get_member(lb[j][0])
                     if u != None:
                         if u == ctx.author:
-                            msg += f"...\n\n**{y+1}. {u.name}**, {lb[j][1]} chadscore :blue_circle:"
+                            msg += f"...\n\n:blue_circle: **{y+1}.** {u.name}, {lb[j][1]} chadscore"
                             break
                         else:
                             y += 1

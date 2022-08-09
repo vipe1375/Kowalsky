@@ -113,19 +113,6 @@ def check_hierarchy(member1 : discord.Member, member2 : discord.Member) -> bool:
         return False
     return True
 
-# Fonctions aide goulag
-
-async def getGoulagRole(ctx):
-    roles = ctx.guild.roles
-    for role in roles:
-        if role.name == "Goulag":
-            return role
-    return await createGoulagRole(ctx)
-
-async def createGoulagRole(ctx):
-    goulagRole = await ctx.guild.create_role(name = "Goulag")
-    return goulagRole
-
 
 # ----------COMMANDES---------#
 
@@ -146,7 +133,7 @@ async def help(ctx, *, theme = None):
         embed.add_field(name = "k.say [truc]", value = "il dit le truc", inline = False)
         embed.add_field(name = "k.support", value = "envoie le lien du serveur d'aide", inline = False)
         embed.add_field(name = "k.invite", value = "envoie un lien d'invitation du bot", inline = False)
-        embed.add_field(name = "k.ping", value = "affiche la mention du bot")
+        embed.add_field(name = "k.ping", value = "affiche la latence du bot")
         embed.add_field(name = "k.suggestion", value = "envoie une suggestion concernant le bot (ne fonctionne que dans les dm du bot)")
         embed.add_field(name = "k.activo [command]", value = "active la commande sur le serveur (permissions : admin, commandes désactivables : csc, randomping, ph, tg, fonction quoi/feur, saydm, haagrah, ratio, sus, cheh, flop, nwar)", inline = False)
         embed.add_field(name = "k.desactivo [command]", value = "désactive la commande (mêmes commandes que activo, permissions : admin)", inline = False)

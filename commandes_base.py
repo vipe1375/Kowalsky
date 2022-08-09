@@ -91,7 +91,7 @@ class CommandesBase(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def ping(self, ctx):
-        await ctx.send(self.bot.user.mention)
+        await ctx.send(self.bot.latency)
 
 
      # Serverinfo :
