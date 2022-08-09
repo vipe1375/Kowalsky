@@ -139,6 +139,7 @@ liste_choix = [liste_random_words, liste_random_pics]
 
 liste_commandes = {'quoi': 1, 'feur': 1, 'tg' : 2, 'ph' : 3, 'randomping' : 4, 'csc' : 5, 'saydm' : 6, 'haagrah' : 7, 'ratio': 8, 'sus': 9, 'cheh': 10, 'flop': 11, 'nwar': 12}
 
+
 liste_gifs = ["https://tenor.com/view/dancing-black-big-gif-20472579",
 "https://tenor.com/view/dance-move-black-gif-18553004",
 "https://tenor.com/view/black-man-dance-happy-dance-gif-15340006",

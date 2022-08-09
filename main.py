@@ -15,9 +15,9 @@ import os
 
 # imports cogs
 import commandes_troll
+import commandes_admin
 import commandes_base
 import chads
-import commandes_admin
 from token_k import token_kowalsky
 from version_k import version
 
@@ -89,6 +89,9 @@ errors_channel_id = 1004319125587378186
 
 
 # ------------ FONCTIONS ------------ #
+
+def is_vipe(id):
+    return id == 691380397673545828
 
 # Commande activée/désactivée
 def check_command(guild_id, command_name):
@@ -185,7 +188,7 @@ async def help(ctx, *, theme = None):
 
 @bot.command()
 async def restart(ctx):
-    if commandes_admin.is_vipe(ctx.author.id):
+    if is_vipe(ctx.author.id):
         bot.reload_extension('CommandesBase')
         bot.reload_extension('CommandesAdmin')
         bot.reload_extension('CommandesTroll')
@@ -314,10 +317,10 @@ async def on_guild_join(guild):
 
 
 
-bot.add_cog(commandes_base.CommandesBase(bot))
-bot.add_cog(commandes_troll.CommandesTroll(bot))
-bot.add_cog(chads.CommandsChads(bot))
-bot.add_cog(commandes_admin.CommandesAdmin(bot))
+bot.load_extension("commandes_bases")
+bot.load_extension("commandes_troll")
+bot.load_extension("commandes_admin")
+bot.load_extension("chads")
 bot.run(token_kowalsky)
 
 
