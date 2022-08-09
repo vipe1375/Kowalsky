@@ -353,7 +353,7 @@ class CommandsChads(commands.Cog):
         if opt == 'g':
             msg = f""
 
-            for i in range(11):
+            for i in range(10):
                 u = self.bot.get_user(lb[i][0])
                 if u != None:
                     if u.id == ctx.author.id:
@@ -363,7 +363,7 @@ class CommandsChads(commands.Cog):
                         msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n\n"
 
             if not author_in_top:
-                for i in range(11, len(lb)):
+                for i in range(10, len(lb)):
                     u = self.bot.get_user(lb[i][0])
                     if u == ctx.author:
                         msg += f"...\n\n:blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore "
