@@ -1,0 +1,1 @@
+Kowalsky is a Discord bot based on a Chad game (inspired of the 'gigachad' meme). It also has many fun commands to interact.
