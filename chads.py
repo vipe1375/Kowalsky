@@ -3,6 +3,7 @@ from discord.ext import commands
 import time as t
 import random as rd
 import asyncio
+from PIL import Image
 
 from discord_slash import ButtonStyle, SlashCommand
 from discord_slash.utils.manage_components import *
@@ -611,6 +612,9 @@ class CommandsChads(commands.Cog):
     @commands.command()
     async def getmedal(self, ctx):
         if database_handler.is_finished(ctx.author.id):
+            fond = Image.open('Pictures/chadroad/medal.png')
+            await ctx.author.avatar_url.save(f"pp_{ctx.author.id}")
+            pp = Image.open(f"pp_{ctx.author.id}")
             file = discord.File("/home/container/Pictures/chadroad/medal.png")
             await ctx.send("Voilà ta médaille :", file = file)
         else:
