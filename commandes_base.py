@@ -34,8 +34,11 @@ class CommandesBase(commands.Cog):
             embed = discord.Embed(title = "Mise à jour", color = bleu, description = msg)
             embed.set_footer(text = f"version actuelle : {version}")
             for i in channels:
-                chan = self.bot.get_channel(i[0])
-                await chan.send(embed = embed)
+                try:
+                    chan = self.bot.get_channel(i[0])
+                    await chan.send(embed = embed)
+                except:
+                    pass
             await ctx.send("message posté")
         else:
             await ctx.send("t'as pas le droit dsl")
@@ -91,7 +94,7 @@ class CommandesBase(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def ping(self, ctx):
-        await ctx.send(self.bot.latency)
+        await ctx.send(f"Latence : {self.bot.latency} secondes")
 
 
      # Serverinfo :
