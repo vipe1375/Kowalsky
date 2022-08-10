@@ -15,9 +15,10 @@ import os
 
 # imports cogs
 import commandes_troll
-import commandes_admin
-import commandes_base
-import chads
+from commandes_troll import CommandesTroll
+from commandes_admin import CommandesAdmin
+from commandes_base import CommandesBase
+from chads import CommandsChads
 from token_k import token_kowalsky
 from version_k import version
 
@@ -65,10 +66,10 @@ async def check_restart_cogs():
 
 @tasks.loop(hours=24)
 async def restart_cogs():
-    bot.reload_extension('CommandesBase')
-    bot.reload_extension('CommandesAdmin')
-    bot.reload_extension('CommandesTroll')
-    bot.reload_extension('CommandsChads')
+    bot.reload_extension('commandes_bases')
+    bot.reload_extension('commandes_admin')
+    bot.reload_extension('commandes_troll')
+    bot.reload_extension('chads')
 
 
 
@@ -176,9 +177,9 @@ async def help(ctx, *, theme = None):
 @bot.command()
 async def restart(ctx):
     if is_vipe(ctx.author.id):
-        bot.reload_extension('CommandesBase')
-        bot.reload_extension('CommandesAdmin')
-        bot.reload_extension('CommandesTroll')
+        bot.reload_extension('commandes_base')
+        bot.reload_extension('commandes_admin')
+        bot.reload_extension('commandes_troll')
 
 
 
@@ -304,9 +305,9 @@ async def on_guild_join(guild):
 
 
 
-bot.load_extension("commandes_bases")
-bot.load_extension("commandes_troll")
+bot.load_extension("commandes_base")
 bot.load_extension("commandes_admin")
+bot.load_extension("commandes_troll")
 bot.load_extension("chads")
 bot.run(token_kowalsky)
 
