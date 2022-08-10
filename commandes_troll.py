@@ -145,6 +145,8 @@ liste_gifs = ["https://tenor.com/view/dancing-black-big-gif-20472579",
 "https://tenor.com/view/black-man-dance-happy-dance-gif-15340006",
 "https://tenor.com/view/laugh-dance-black-kid-get-it-killing-it-gif-10743055",
 "https://tenor.com/view/black-dance-black-twerk-gif-20765436"]
+
+
 # Couleurs :
 
 bleu = 0x2BE4FF #Normal

@@ -85,6 +85,10 @@ chads_tips = [
     "tip n°22: n'adopte pas un animal mais deviens son ami, car relation de supériorité envers les animaux = pas chad"
 ]
 
+actions = ["mange", "bois", "urine", "casse", "explose", "chie", "construis", "cuisine", "regarde", "suce", "lèche", "baise", "sois"]
+sujets = ["un gay (no offense les lgbt)", "ton père", "ta mère", "ta sœur", "ton chat", "un ours", "un requin", "du gravier", "une pierre", "de la cocaïne", "une fusée", "Kim Jong Un", "du caca"]
+compléments = ["tous les matins", "7 fois par jour", "à Noël", "pour dénazifier l'Ukraine", "pour prouver ta supériorité", "quand tu as faim", "au lieu de te pignouf", "aux toilettes", "à l'école", "devant des enfants", "pendant que tu dors"]
+
 # Couleurs :
 bleu = 0x2BE4FF #Normal
 vert = 0x00FF66 #Unban/unmute/free
@@ -502,8 +506,13 @@ class CommandsChads(commands.Cog):
     @commands.cooldown(1, 86400, commands.BucketType.user)
     async def chadtips(self, ctx):
         if database_handler.is_finished(ctx.author.id) == False:
-            c_ad = rd.choice(chads_random)
-            msg = rd.choice(chads_tips)
+            choix = rd.randint(0, 1)
+            if choix == 0:
+                msg = rd.choice(chads_tips)
+            else:
+                msg = f"{rd.choice(actions)} {rd.choice(sujets)} {rd.choice(compléments)}"
+            c_ad = rd.choice(chads_random) # adresse
+            
             embed = discord.Embed(description = msg, color = bleu)
             file = discord.File(fp = c_ad, filename = "image.png")
             embed.set_image(url="attachment://image.png")
