@@ -13,6 +13,9 @@ import os
 from database_handler_k import DatabaseHandler
 database_handler = DatabaseHandler("database_kowalsky.db")
 
+def setup(bot):
+    bot.add_cog(CommandesTroll(bot))
+
 # ------------ INFOS ---------------- #
 
 listeOof = os.listdir('/home/container/Pictures/oof')
@@ -136,11 +139,14 @@ liste_choix = [liste_random_words, liste_random_pics]
 
 liste_commandes = {'quoi': 1, 'feur': 1, 'tg' : 2, 'ph' : 3, 'randomping' : 4, 'csc' : 5, 'saydm' : 6, 'haagrah' : 7, 'ratio': 8, 'sus': 9, 'cheh': 10, 'flop': 11, 'nwar': 12}
 
+
 liste_gifs = ["https://tenor.com/view/dancing-black-big-gif-20472579",
 "https://tenor.com/view/dance-move-black-gif-18553004",
 "https://tenor.com/view/black-man-dance-happy-dance-gif-15340006",
 "https://tenor.com/view/laugh-dance-black-kid-get-it-killing-it-gif-10743055",
 "https://tenor.com/view/black-dance-black-twerk-gif-20765436"]
+
+
 # Couleurs :
 
 bleu = 0x2BE4FF #Normal
@@ -171,9 +177,8 @@ def is_vipe_or_bot(id):
 
 
 class CommandesTroll(commands.Cog):
-    def __init__(self, bot, version):
+    def __init__(self, bot):
         self.bot = bot
-        self.version = version
 
     @commands.command()
     async def k(self, ctx):

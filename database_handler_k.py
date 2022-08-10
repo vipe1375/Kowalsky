@@ -1,10 +1,12 @@
 import os
 import sqlite3
 
+l = [5, 6, 7, 12, 19, 25, 37, 75, 124, 373]
+
 def get_chadscore(result):
     chadscore = 0
-    for i in result:
-        chadscore += i[0]*i[1]
+    for i in range(len(result)):
+        chadscore += result[i][0] * result[i][1] * l[result[i][0]-1] #rang du chad * nombre * valeur
     return chadscore
 
 
@@ -170,7 +172,7 @@ class DatabaseHandler():
 
     def upgrade_chad(self, user_id, chad_id):
         cursor = self.con.cursor()
-        query = f"UPDATE Collection SET number = number - 10 WHERE user_id = {user_id} AND chad_id = {chad_id};"
+        query = f"UPDATE Collection SET number = number - 5 WHERE user_id = {user_id} AND chad_id = {chad_id};"
         cursor.execute(query)
         self.con.commit()
         cursor.close()
@@ -251,7 +253,6 @@ class DatabaseHandler():
         cursor.execute(query)
         self.con.commit()
         cursor.close()
-        print("vainqueurs chadroad ok")
 
     
 # ------------------ Testmod --------------#

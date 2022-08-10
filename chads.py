@@ -12,6 +12,9 @@ database_handler = DatabaseHandler("database_kowalsky.db")
 intents = discord.Intents.default()
 intents.members = True
 
+def setup(bot):
+    bot.add_cog(CommandsChads(bot))
+
 # INFOS
 chads_adresses = {1: "/home/container/Pictures/chads/chad_1.jpg",
                  2: "/home/container/Pictures/chads/chad_2.jpeg",
@@ -81,6 +84,10 @@ chads_tips = [
     "tip n°21: chat > chien car 'chat' ressemble à 'chad'",
     "tip n°22: n'adopte pas un animal mais deviens son ami, car relation de supériorité envers les animaux = pas chad"
 ]
+
+actions = ["mange", "bois", "urine", "casse", "explose", "chie", "construis", "cuisine", "regarde", "suce", "lèche", "baise", "sois"]
+sujets = ["un gay (no offense les lgbt)", "ton père", "ta mère", "ta sœur", "ton chat", "un ours", "un requin", "du gravier", "une pierre", "de la cocaïne", "une fusée", "Kim Jong Un", "du caca"]
+compléments = ["tous les matins", "7 fois par jour", "à Noël", "pour dénazifier l'Ukraine", "pour prouver ta supériorité", "quand tu as faim", "au lieu de te pignouf", "aux toilettes", "à l'école", "devant des enfants", "pendant que tu dors"]
 
 # Couleurs :
 bleu = 0x2BE4FF #Normal
@@ -297,9 +304,8 @@ async def situation(ctx, sit):
 
 class CommandsChads(commands.Cog):
 
-    def __init__(self, bot, version) -> None:
+    def __init__(self, bot) -> None:
         self.bot = bot
-        self.version = version
 
 # collection :
 
@@ -340,24 +346,66 @@ class CommandsChads(commands.Cog):
                 await ctx.send(embed = embed)
 
 
+    # topcol:
+
     @commands.command(aliases = ['topcoll', 'topcols', 'topcolls'])
     async def topcol(self, ctx, opt: str = None):
+        author_in_top = False
         lb = database_handler.lb_chadscore()
+
+        # Classement général
         if opt == 'g':
             msg = f""
-            for i in range(len(lb)):
+
+            for i in range(10):
                 u = self.bot.get_user(lb[i][0])
                 if u != None:
-                    msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n\n"
+                    if u.id == ctx.author.id:
+                        msg += f":blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore \n\n"
+                        author_in_top = True
+                    else:
+                        msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n\n"
+
+            if not author_in_top:
+                for i in range(10, len(lb)):
+                    u = self.bot.get_user(lb[i][0])
+                    if u == ctx.author:
+                        msg += f"...\n\n:blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore "
+                        break
+
             embed = discord.Embed(title = f"Classement général des collections", description = msg, color = bleu)
             await ctx.send(embed = embed)
-            
+        
+        # Classement par serveur
         elif opt == None:
+            y = 0
+            
             msg = f""
             for i in range(len(lb)):
-                user = ctx.guild.get_member(lb[i][0])
-                if user != None:
-                    msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n\n"
+                if y < 10:
+                    user = ctx.guild.get_member(lb[i][0])
+                    if user != None:
+                        if user == ctx.author:
+                            msg += f":blue_circle: **{y+1}.** {user.name}, {lb[i][1]} chadscore \n\n"
+                            author_in_top = True
+                        else:
+                            msg += f"**{y+1}.** {user.name}, {lb[i][1]} chadscore\n\n"
+                        y += 1
+                else:
+                    
+                    break
+
+
+            if not author_in_top:
+                for j in range(i, len(lb)):
+                    u = ctx.guild.get_member(lb[j][0])
+                    if u != None:
+                        if u == ctx.author:
+                            msg += f"...\n\n:blue_circle: **{y+1}.** {u.name}, {lb[j][1]} chadscore"
+                            break
+                        else:
+                            y += 1
+
             embed = discord.Embed(title = f"Classement des collections de {ctx.guild.name}", description = msg, color = bleu)
             await ctx.send(embed = embed)
 
@@ -410,7 +458,7 @@ class CommandsChads(commands.Cog):
         elif nbe <= 370:
             c_id = 9
 
-        elif nbe <= 372:
+        elif nbe <= 373:
             c_id = 10
 
         if has_chad_bis(result, c_id) == False:
@@ -430,7 +478,7 @@ class CommandsChads(commands.Cog):
         collection = database_handler.get_collection(member.id)
         if has_chad(collection, rank):
             pos = chad_pos(collection, rank)
-            if collection[pos][1] > 10:
+            if collection[pos][1] > 5:
                 database_handler.upgrade_chad(member.id, rank)
                 if has_chad(collection, rank+1):
                     database_handler.add_chad(member.id, rank + 1, 1)
@@ -439,7 +487,7 @@ class CommandsChads(commands.Cog):
                 await ctx.send(f"bien joué ! chad amélioré au rang {rank+1} !")
                 database_handler.update_chadscore(ctx.author.id)
             else:
-                await ctx.send("t'en a pas assez dsl, il t'en faut au moins 11")
+                await ctx.send("t'en a pas assez dsl, il t'en faut au moins 6")
         else:
             await ctx.send("t'as pas ce chad dsl")
 
@@ -458,8 +506,13 @@ class CommandsChads(commands.Cog):
     @commands.cooldown(1, 86400, commands.BucketType.user)
     async def chadtips(self, ctx):
         if database_handler.is_finished(ctx.author.id) == False:
-            c_ad = rd.choice(chads_random)
-            msg = rd.choice(chads_tips)
+            choix = rd.randint(0, 1)
+            if choix == 0:
+                msg = rd.choice(chads_tips)
+            else:
+                msg = f"{rd.choice(actions)} {rd.choice(sujets)} {rd.choice(compléments)}"
+            c_ad = rd.choice(chads_random) # adresse
+            
             embed = discord.Embed(description = msg, color = bleu)
             file = discord.File(fp = c_ad, filename = "image.png")
             embed.set_image(url="attachment://image.png")

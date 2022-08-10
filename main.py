@@ -15,10 +15,12 @@ import os
 
 # imports cogs
 import commandes_troll
-import commandes_base
-import chads
-import commandes_admin
+from commandes_troll import CommandesTroll
+from commandes_admin import CommandesAdmin
+from commandes_base import CommandesBase
+from chads import CommandsChads
 from token_k import token_kowalsky
+from version_k import version
 
 # database
 from database_handler_k import DatabaseHandler
@@ -31,7 +33,6 @@ bot = commands.Bot(command_prefix = "k.", intents = intents)
 bot.remove_command("help")
 
 # démarrage du bot
-version = "3.16.26"
 
 @bot.event
 async def on_ready():
@@ -39,6 +40,7 @@ async def on_ready():
 
     await channel.send("restart")
     change_status.start()
+    check_restart_cogs.start()
 
     database_handler.set_finishers()
 
@@ -53,6 +55,7 @@ async def change_status():
     a3 = discord.Activity(name = f"k.invite | k.support", type = discord.ActivityType.playing)
     activities = [a1, a2, a3]
     await bot.change_presence(activity=rd.choice(activities))
+
 
 
 
@@ -74,6 +77,9 @@ errors_channel_id = 1004319125587378186
 
 # ------------ FONCTIONS ------------ #
 
+def is_vipe(id):
+    return id == 691380397673545828
+
 # Commande activée/désactivée
 def check_command(guild_id, command_name):
     command_id = liste_commandes[command_name]
@@ -93,19 +99,6 @@ def check_hierarchy(member1 : discord.Member, member2 : discord.Member) -> bool:
     if member2.top_role <= member1.top_role:
         return False
     return True
-
-# Fonctions aide goulag
-
-async def getGoulagRole(ctx):
-    roles = ctx.guild.roles
-    for role in roles:
-        if role.name == "Goulag":
-            return role
-    return await createGoulagRole(ctx)
-
-async def createGoulagRole(ctx):
-    goulagRole = await ctx.guild.create_role(name = "Goulag")
-    return goulagRole
 
 
 # ----------COMMANDES---------#
@@ -127,6 +120,7 @@ async def help(ctx, *, theme = None):
         embed.add_field(name = "k.say [truc]", value = "il dit le truc", inline = False)
         embed.add_field(name = "k.support", value = "envoie le lien du serveur d'aide", inline = False)
         embed.add_field(name = "k.invite", value = "envoie un lien d'invitation du bot", inline = False)
+        embed.add_field(name = "k.ping", value = "affiche la latence du bot")
         embed.add_field(name = "k.suggestion", value = "envoie une suggestion concernant le bot (ne fonctionne que dans les dm du bot)")
         embed.add_field(name = "k.activo [command]", value = "active la commande sur le serveur (permissions : admin, commandes désactivables : csc, randomping, ph, tg, fonction quoi/feur, saydm, haagrah, ratio, sus, cheh, flop, nwar)", inline = False)
         embed.add_field(name = "k.desactivo [command]", value = "désactive la commande (mêmes commandes que activo, permissions : admin)", inline = False)
@@ -140,7 +134,7 @@ async def help(ctx, *, theme = None):
         embed = discord.Embed(title = "**Commandes stylées :sunglasses:**", color = bleu)
         embed.set_thumbnail(url = "attachment://kowalskypp.png")
         embed.add_field(name = "Important", value = "[exemple] = argument requis, (exemple) = argument optionnel\n\nPas d'infos sur ce que font les commandes, à vous de le découvrir", inline = False)
-        embed.add_field(name = "Commandes", value = "\nk.tg [membre]\n\nk.coucou\n\nk.ph\n\nk.randomping\n\nk.matchup ou k.mu\n\nk.stylé\n\nk.csc\n\nk.haagrah\n\nk.random\n\nk.sus\n\nk.cheh\n\nk.flop\n\nk.nwar\n\net d'autres qui arrivent...", inline = False)
+        embed.add_field(name = "Commandes", value = "\nk.tg [membre]\n\nk.coucou\n\nk.ph\n\nk.randomping\n\nk.matchup ou k.mu\n\nk.stylé\n\nk.csc\n\nk.haagrah\n\nk.random\n\nk.sus\n\nk.cheh\n\nk.flop\n\nk.nwar\n\nk.k\n\net d'autres qui arrivent...", inline = False)
         embed.set_footer(text = "version actuelle : " + version)
         await ctx.send(embed = embed, file = file)
 
@@ -153,7 +147,7 @@ async def help(ctx, *, theme = None):
         embed.add_field(name = "k.collection", value = "Affiche ta collection de chads", inline = False)
         embed.add_field(name = "k.getchad", value = "Obtiens ton chad du jour ! slowmode : 1j", inline = False)
         embed.add_field(name = "k.mychad [rang du chad]", value = "affiche le chad du rang en question si tu l'as", inline = False)
-        embed.add_field(name = "k.upgrade [rang]", value = "Si t'as plus de 10 chads de ce rang, tu perds 10 chads de ce rang et t'en gagne 1 du rang d'au-dessus", inline = False)
+        embed.add_field(name = "k.upgrade [rang]", value = "Si t'as plus de 5 chads de ce rang, tu perds 5 chads de ce rang et t'en gagne 1 du rang d'au-dessus", inline = False)
         #embed.add_field(name = "k.trade [membre avec qui échanger]", value = "permet d'échanger des chads avec quelqu'un dautre (si vous avez les chads que vous proposez bien entendu)")
         embed.add_field(name = "k.chadsong", value = "joue la douce mélodie des gigachads afin de satifaire vos tympans", inline = False)
         embed.add_field(name = "k.chadtips", value = "affiche un conseil pour devenir un gigachad", inline = False)
@@ -164,6 +158,14 @@ async def help(ctx, *, theme = None):
         embed.add_field(name = "k.leaderboard/k.lb",value = "affiche un classement de la route des chads dans le serveur (faites `k.lb g` pour afficher le classement général)", inline = False)
         embed.set_footer(text = "version actuelle : " + version)
         await ctx.send(embed = embed, file = file)
+
+
+@bot.command()
+async def restart(ctx):
+    if is_vipe(ctx.author.id):
+        bot.reload_extension('commandes_base')
+        bot.reload_extension('commandes_admin')
+        bot.reload_extension('commandes_troll')
 
 
 
@@ -261,12 +263,21 @@ async def on_command_error(ctx, error):
         else:
             embed10 = discord.Embed(description = "y'a une erreur mais je sais pas trop quoi :x:", color = orange)
             await ctx.send(embed = embed10)
+            l = traceback.format_exception(type(error), error, error.__traceback__)
+            msg = "`"
+            for i in l:
+                msg += i
+            channel = bot.get_channel(errors_channel_id)
+            msg += "`"
+            await channel.send(msg)
     else:
+
         l = traceback.format_exception(type(error), error, error.__traceback__)
-        msg = ""
+        msg = "Erreur venant du testmod:\n`"
         for i in l:
             msg += i
         channel = bot.get_channel(errors_channel_id)
+        msg += "`"
         await channel.send(msg)
 
         
@@ -280,10 +291,10 @@ async def on_guild_join(guild):
 
 
 
-bot.add_cog(commandes_base.CommandesBase(bot, version))
-bot.add_cog(commandes_troll.CommandesTroll(bot, version))
-bot.add_cog(chads.CommandsChads(bot, version))
-bot.add_cog(commandes_admin.CommandesAdmin(bot, version))
+bot.load_extension("commandes_base")
+bot.load_extension("commandes_admin")
+bot.load_extension("commandes_troll")
+bot.load_extension("chads")
 bot.run(token_kowalsky)
 
 
