@@ -182,6 +182,7 @@ class CommandesTroll(commands.Cog):
 
     @commands.command()
     async def k(self, ctx):
+        await ctx.message.delete()
         await ctx.send("caca :poop:")
 
     @commands.command()

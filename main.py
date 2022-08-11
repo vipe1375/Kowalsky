@@ -70,6 +70,8 @@ async def restart_cogs():
     bot.reload_extension('commandes_admin')
     bot.reload_extension('commandes_troll')
     bot.reload_extension('chads')
+    channel = bot.get_channel(logs_channel_id)
+    await channel.send("restart cogs :green_circle:")
 
 
 
@@ -181,6 +183,8 @@ async def restart(ctx):
         bot.reload_extension('commandes_base')
         bot.reload_extension('commandes_admin')
         bot.reload_extension('commandes_troll')
+        channel = bot.get_channel(logs_channel_id)
+        await channel.send("restart cogs :green_circle:")
 
 
 
