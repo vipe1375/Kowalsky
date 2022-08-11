@@ -504,27 +504,24 @@ class CommandsChads(commands.Cog):
         await ctx.send(file = file)
 
     @commands.command()
-    @commands.cooldown(1, 86400, commands.BucketType.user)
+    @commands.cooldown(3, 86400, commands.BucketType.user)
     async def chadtips(self, ctx):
-        if database_handler.is_finished(ctx.author.id) == False:
-            choix = rd.randint(0, 1)
-            if choix == 0:
-                msg = rd.choice(chads_tips)
-            else:
-                msg = f"{rd.choice(actions)} {rd.choice(sujets)} {rd.choice(compléments)}"
-            c_ad = rd.choice(chads_random) # adresse
-            
-            embed = discord.Embed(description = msg, color = bleu)
-            file = discord.File(fp = c_ad, filename = "image.png")
-            embed.set_image(url="attachment://image.png")
-            await ctx.send(file=file, embed=embed)
+        choix = rd.randint(0, 1)
+        if choix == 0:
+            msg = rd.choice(chads_tips)
         else:
-            await ctx.send("t'es déjà un gigachad, tu as fini la route des Chads :sunglasses:")
+            msg = f"{rd.choice(actions)} {rd.choice(sujets)} {rd.choice(compléments)}"
+        c_ad = rd.choice(chads_random) # adresse
+        
+        embed = discord.Embed(description = msg, color = bleu)
+        file = discord.File(fp = c_ad, filename = "image.png")
+        embed.set_image(url="attachment://image.png")
+        await ctx.send(file=file, embed=embed)
 
     @chadtips.error
     async def chadtips_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            await ctx.send("Tu as eu ton conseil du jour, la patience fait partie des qualités d'un chad")
+            await ctx.send("Tu as eu tes conseils du jour, la patience fait partie des qualités d'un chad")
 
     @commands.command()
     async def routedeschads(self, ctx):

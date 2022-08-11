@@ -237,7 +237,10 @@ class DatabaseHandler():
 
     def is_finished(self, user_id):
         result = self.get_etape(user_id)
-        return result[0][0] == 21
+        if result is not None:
+            return result[0][0] == 21 or result[0][0] == 0
+        else:
+            return False
 
     def leaderboard(self):
         cursor = self.con.cursor()
