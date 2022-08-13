@@ -308,6 +308,10 @@ class CommandsChads(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
 
+    @commands.command()
+    async def topcol(self, ctx):
+        await ctx.send("Maintenant tout est dans la commande `k.lb` mon reuf")
+
 # collection :
 
     @commands.command(aliases = ['col', 'coll'])
@@ -346,69 +350,6 @@ class CommandsChads(commands.Cog):
                 embed.add_field(name = f"Chads de {member.name}", value = txt)
                 await ctx.send(embed = embed)
 
-
-    # topcol:
-
-    @commands.command(aliases = ['topcoll', 'topcols', 'topcolls'])
-    async def topcol(self, ctx, opt: str = None):
-        author_in_top = False
-        lb = database_handler.lb_chadscore()
-
-        # Classement général
-        if opt == 'g':
-            msg = f""
-
-            for i in range(10):
-                u = self.bot.get_user(lb[i][0])
-                if u != None:
-                    if u.id == ctx.author.id:
-                        msg += f":blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore \n\n"
-                        author_in_top = True
-                    else:
-                        msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n\n"
-
-            if not author_in_top:
-                for i in range(10, len(lb)):
-                    u = self.bot.get_user(lb[i][0])
-                    if u == ctx.author:
-                        msg += f"...\n\n:blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore "
-                        break
-
-            embed = discord.Embed(title = f"Classement général des collections", description = msg, color = bleu)
-            await ctx.send(embed = embed)
-        
-        # Classement par serveur
-        elif opt == None:
-            y = 0
-            
-            msg = f""
-            for i in range(len(lb)):
-                if y < 10:
-                    user = ctx.guild.get_member(lb[i][0])
-                    if user != None:
-                        if user == ctx.author:
-                            msg += f":blue_circle: **{y+1}.** {user.name}, {lb[i][1]} chadscore \n\n"
-                            author_in_top = True
-                        else:
-                            msg += f"**{y+1}.** {user.name}, {lb[i][1]} chadscore\n\n"
-                        y += 1
-                else:
-                    
-                    break
-
-
-            if not author_in_top:
-                for j in range(i, len(lb)):
-                    u = ctx.guild.get_member(lb[j][0])
-                    if u != None:
-                        if u == ctx.author:
-                            msg += f"...\n\n:blue_circle: **{y+1}.** {u.name}, {lb[j][1]} chadscore"
-                            break
-                        else:
-                            y += 1
-
-            embed = discord.Embed(title = f"Classement des collections de {ctx.guild.name}", description = msg, color = bleu)
-            await ctx.send(embed = embed)
 
 
     @commands.command()
@@ -625,9 +566,49 @@ class CommandsChads(commands.Cog):
 
     @commands.command(aliases = ['lb'])
     @commands.guild_only()
-    async def leaderboard(self, ctx, arg = None):
-        guild = ctx.guild
-        lb = database_handler.leaderboard()
+    async def leaderboard(self, ctx):
+        
+        # Embed avec menu select
+        embed1 = discord.Embed(title = "Choix du classement", description = "Choisis le classement à afficher avec le menu en-dessous mon reuf", color = bleu)
+        liste_classements = [
+            create_select_option('Collections - serveur', value = '0'),
+            create_select_option('Collections - général', value = '1'),
+            create_select_option('Route des Chads - serveur', value = '2'),
+            create_select_option('Route des Chads - général', value = '3')
+            ]
+        select = create_select(
+            liste_classements,
+            placeholder="choisis un joueur",
+            min_values=1,
+            max_values=1)
+
+        menu_msg = await ctx.send(embed = embed1, components=[create_actionrow(select)])
+
+        # interaction de l'utilisateur
+        def check_menu(m):
+            return m.author.id == ctx.author.id and m.origin_message.id == menu_msg.id
+        
+        choice_ctx = await wait_for_component(self.bot, components=select, check=check_menu, timeout = 30)
+        await choice_ctx.defer(ignore=True)
+        choix = choice_ctx.values[0]
+
+        await menu_msg.delete()
+        if choix == '0' or choix == '1':
+            lb = database_handler.lb_chadscore()
+            if choix == '0':
+                await self.topcol(ctx, lb)
+            elif choix == '1':
+                await self.topcol(ctx, lb, 'g')
+            
+        elif choix == '2' or choix == '3':
+            lb = database_handler.leaderboard()
+            if choix == '2':
+                await self.create_leaderboard(ctx, lb)
+            elif choix == '3':
+                await self.create_leaderboard(ctx, lb, 'g')
+            
+        
+    async def create_leaderboard(self, ctx, lb, arg = None):   
 
         if arg == "g" or arg == "global":
             txt = f""
@@ -645,17 +626,77 @@ class CommandsChads(commands.Cog):
         elif arg == None:
             txt = f""
             for i in range(11):
-                user = guild.get_member(lb[i][0])
+                user = ctx.guild.get_member(lb[i][0])
                 if user != None:
                     if lb[i][1] == 21 or lb[i][1] == 0:
                         txt = txt + f"**{user.name} **est devenu un Chad Suprême :sunglasses:\n\n"
                     else:
                         txt = txt + f"**{user.name} :** étape {lb[i][1]}\n\n"
-            embed = discord.Embed(title = f"Classement de la Route des Chads dans {guild.name}", color = bleu, description = txt)
+            embed = discord.Embed(title = f"Classement de la Route des Chads dans {ctx.guild.name}", color = bleu, description = txt)
             await ctx.send(embed = embed)
 
         else:
             await ctx.send("Cet argument n'est pas reconnu")
+
+    async def topcol(self, ctx, lb, opt: str = None):
+        author_in_top = False
+
+        # Classement général
+        if opt == 'g':
+            msg = f""
+
+            for i in range(10):
+                u = self.bot.get_user(lb[i][0])
+                if u != None:
+                    if u.id == ctx.author.id:
+                        msg += f":blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore \n\n"
+                        author_in_top = True
+                    else:
+                        msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n\n"
+
+            if not author_in_top:
+                for i in range(10, len(lb)):
+                    u = self.bot.get_user(lb[i][0])
+                    if u == ctx.author:
+                        msg += f"...\n\n:blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore "
+                        break
+
+            embed = discord.Embed(title = f"Classement général des collections", description = msg, color = bleu)
+            await ctx.send(embed = embed)
+        
+        # Classement par serveur
+        elif opt == None:
+            y = 0
+            
+            msg = f""
+            for i in range(len(lb)):
+                if y < 10:
+                    user = ctx.guild.get_member(lb[i][0])
+                    if user != None:
+                        if user == ctx.author:
+                            msg += f":blue_circle: **{y+1}.** {user.name}, {lb[i][1]} chadscore \n\n"
+                            author_in_top = True
+                        else:
+                            msg += f"**{y+1}.** {user.name}, {lb[i][1]} chadscore\n\n"
+                        y += 1
+                else:
+                    
+                    break
+
+
+            if not author_in_top:
+                for j in range(i, len(lb)):
+                    u = ctx.guild.get_member(lb[j][0])
+                    if u != None:
+                        if u == ctx.author:
+                            msg += f"...\n\n:blue_circle: **{y+1}.** {u.name}, {lb[j][1]} chadscore"
+                            break
+                        else:
+                            y += 1
+
+            embed = discord.Embed(title = f"Classement des collections de {ctx.guild.name}", description = msg, color = bleu)
+            await ctx.send(embed = embed)
+
 
     @commands.command()
     async def trade(self, ctx, member2 : discord.Member):
