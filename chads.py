@@ -618,7 +618,7 @@ class CommandsChads(commands.Cog):
                 if lb[i][1] == 21 or lb[i][1] == 0:
                     txt = txt + f"**{user.name} **est devenu un Chad Suprême :sunglasses:\n\n"
                 else:
-                    txt = txt + f"**{user.name} :** étape {lb[i][1]}\n\n"
+                    txt = txt + f"**{user.name} :** étape {lb[i][1]}\n"
 
             embed = discord.Embed(title = "Classement de la Route des Chads", color = bleu, description = txt)
             await ctx.send(embed = embed)
@@ -631,7 +631,7 @@ class CommandsChads(commands.Cog):
                     if lb[i][1] == 21 or lb[i][1] == 0:
                         txt = txt + f"**{user.name} **est devenu un Chad Suprême :sunglasses:\n\n"
                     else:
-                        txt = txt + f"**{user.name} :** étape {lb[i][1]}\n\n"
+                        txt = txt + f"**{user.name} :** étape {lb[i][1]}\n"
             embed = discord.Embed(title = f"Classement de la Route des Chads dans {ctx.guild.name}", color = bleu, description = txt)
             await ctx.send(embed = embed)
 
@@ -649,16 +649,16 @@ class CommandsChads(commands.Cog):
                 u = self.bot.get_user(lb[i][0])
                 if u != None:
                     if u.id == ctx.author.id:
-                        msg += f":blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore \n\n"
+                        msg += f":blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore \n"
                         author_in_top = True
                     else:
-                        msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n\n"
+                        msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n"
 
             if not author_in_top:
                 for i in range(10, len(lb)):
                     u = self.bot.get_user(lb[i][0])
                     if u == ctx.author:
-                        msg += f"...\n\n:blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore "
+                        msg += f"...\n:blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore "
                         break
 
             embed = discord.Embed(title = f"Classement général des collections", description = msg, color = bleu)
@@ -674,10 +674,10 @@ class CommandsChads(commands.Cog):
                     user = ctx.guild.get_member(lb[i][0])
                     if user != None:
                         if user == ctx.author:
-                            msg += f":blue_circle: **{y+1}.** {user.name}, {lb[i][1]} chadscore \n\n"
+                            msg += f":blue_circle: **{y+1}.** {user.name}, {lb[i][1]} chadscore \n"
                             author_in_top = True
                         else:
-                            msg += f"**{y+1}.** {user.name}, {lb[i][1]} chadscore\n\n"
+                            msg += f"**{y+1}.** {user.name}, {lb[i][1]} chadscore\n"
                         y += 1
                 else:
                     
