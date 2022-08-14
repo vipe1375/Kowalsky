@@ -475,12 +475,12 @@ class CommandsChads(commands.Cog):
                     if confirmation.custom_id == "1":
                         # On ajoute les chads
                         if has_chad(member2_col, chad_given):
-                            database_handler.add_chad(member2.id, chad_given)
+                            database_handler.add_chad(member2.id, chad_given, 1)
                         else:
                             database_handler.add_new_chad(member2.id, chad_given)
 
                         if has_chad(member_col, chad_asked):
-                            database_handler.add_chad(member.id, chad_asked)
+                            database_handler.add_chad(member.id, chad_asked, 1)
                         else:
                             database_handler.add_new_chad(member.id, chad_asked)
 
