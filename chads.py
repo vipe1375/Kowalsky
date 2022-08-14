@@ -578,7 +578,7 @@ class CommandsChads(commands.Cog):
             ]
         select = create_select(
             liste_classements,
-            placeholder="choisis un joueur",
+            placeholder="Classement à afficher",
             min_values=1,
             max_values=1)
 
