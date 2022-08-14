@@ -19,6 +19,7 @@ from commandes_troll import CommandesTroll
 from commandes_admin import CommandesAdmin
 from commandes_base import CommandesBase
 from chads import CommandsChads
+from chads2 import CommandsChads2
 from token_k import token_kowalsky
 from version_k import version
 
@@ -70,6 +71,7 @@ async def restart_cogs():
     bot.reload_extension('commandes_admin')
     bot.reload_extension('commandes_troll')
     bot.reload_extension('chads')
+    bot.reload_extension('chads2')
     channel = bot.get_channel(logs_channel_id)
     await channel.send("restart cogs :green_circle:")
 
@@ -183,6 +185,7 @@ async def restart(ctx):
         bot.reload_extension('commandes_base')
         bot.reload_extension('commandes_admin')
         bot.reload_extension('commandes_troll')
+        bot.reload_extension('chads')
         channel = bot.get_channel(logs_channel_id)
         await channel.send("restart cogs :green_circle:")
 
@@ -314,6 +317,7 @@ bot.load_extension("commandes_base")
 bot.load_extension("commandes_admin")
 bot.load_extension("commandes_troll")
 bot.load_extension("chads")
+bot.load_extension("chads2")
 bot.run(token_kowalsky)
 
 
