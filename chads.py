@@ -13,6 +13,7 @@ database_handler = DatabaseHandler("database_kowalsky.db")
 intents = discord.Intents.default()
 intents.members = True
 
+
 def setup(bot):
     bot.add_cog(CommandsChads(bot))
 
@@ -302,13 +303,10 @@ class CommandsChads(commands.Cog):
         # interaction de l'utilisateur
         def check_menu(m):
             
-            print(m.author.id, ctx.author.id)
-            print(m.origin_message.id, menu_msg.id)
+            
             
             return m.author.id == ctx.author.id and m.origin_message.id == menu_msg.id
-        await ctx.send("avant wait_for")
         choice_ctx = await wait_for_component(self.bot, components=select, check=check_menu, timeout = 30)
-        await ctx.send("après wait_for")
         await choice_ctx.defer(ignore=True)
         choix = choice_ctx.values[0]
 

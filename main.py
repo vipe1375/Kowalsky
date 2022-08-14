@@ -2,7 +2,8 @@
 import discord
 from discord.ext import commands, tasks
 from discord.utils import get
-
+from discord_slash import ButtonStyle, SlashCommand
+from discord_slash.utils.manage_components import *
 
 # autres modules
 import time as t
@@ -32,6 +33,7 @@ intents = discord.Intents.all()
 intents.members = True
 bot = commands.Bot(command_prefix = "k.", intents = intents)
 bot.remove_command("help")
+slash = SlashCommand(bot)
 
 # démarrage du bot
 
