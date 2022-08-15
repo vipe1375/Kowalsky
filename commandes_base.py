@@ -69,6 +69,7 @@ class CommandesBase(commands.Cog):
             > `flop`
             > `nwar`
             > `k`
+            > `con`
             et d'autres qui arrivent :sunglasses:"""
             embed.set_thumbnail(url = "attachment://kowalskypp.png")
             embed.add_field(name = "Important", value = "<exemple> = argument requis, (exemple) = argument optionnel\n\nPas d'infos sur ce que font les commandes, à vous de le découvrir", inline = False)

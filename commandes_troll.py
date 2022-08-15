@@ -146,6 +146,23 @@ liste_gifs = ["https://tenor.com/view/dancing-black-big-gif-20472579",
 "https://tenor.com/view/laugh-dance-black-kid-get-it-killing-it-gif-10743055",
 "https://tenor.com/view/black-dance-black-twerk-gif-20765436"]
 
+liste_cons = [
+    "t'es pas le couteau le plus aiguisé du tiroir",
+    "si on mettait tous les idiots du village dans un village, tu serais quand même l'idiot du village",
+    "t'es pas le mec le plus con du monde, mais t'as vraiment intérêt à ce qu'il meure pas",
+    "on est tous le con de quelqu'un d'autre, mais toi ça fait l'unanimité",
+    "si la connerie se mesurait, tu servirais de mètre étalon",
+    "t'es pas la truite la plus oxygénée du ruisseau",
+    "t'es pas le crayon le mieux taillé de la trousse",
+    "t'es pas la chips a plus croquante du paquet",
+    "t'es pas le pingouin qui glisse le plus loin",
+    "t'es pas le castor le plus utile au barrage",
+    "t'es con comme une valise sans poignée",
+    "t'as pas inventé la poudre mais tu devais pas être loin quand elle a explosé",
+    "si les cons volaient tu serais chef d'escadrille",
+    "si on mettait les cons sur orbite t'aurais pas fini de tourner",
+    "t'es pas le chocapic le plus fort en chocolat"
+]
 
 # Couleurs :
 
@@ -179,6 +196,13 @@ def is_vipe_or_bot(id):
 class CommandesTroll(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command(aliases = ['tcon'])
+    async def con(self, ctx, member: discord.Member = None):
+        if member == None:
+            await ctx.send(rd.choice(liste_cons))
+        else:
+            await ctx.send(f"{rd.choice(liste_cons)} {member.mention}")
 
     @commands.command()
     async def k(self, ctx):
