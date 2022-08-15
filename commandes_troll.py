@@ -199,10 +199,16 @@ class CommandesTroll(commands.Cog):
 
     @commands.command(aliases = ['tcon'])
     async def con(self, ctx, member: discord.Member = None):
-        if member == None:
-            await ctx.send(rd.choice(liste_cons))
+        if member != None:
+            if is_vipe_or_bot(member.id):
+                await ctx.send("nan c'est toi t'es con")
+            elif member == ctx.author:
+                await ctx.send("nooon t'es pas con bebou aie confiance en toi :pleading_face::heart::heart:")
+            else:
+                await ctx.send(f"{rd.choice(liste_cons)} {member.mention}")
         else:
-            await ctx.send(f"{rd.choice(liste_cons)} {member.mention}")
+            await ctx.send(rd.choice(liste_cons))
+            
 
     @commands.command()
     async def k(self, ctx):
