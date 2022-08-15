@@ -27,35 +27,52 @@ class CommandesBase(commands.Cog):
         #self.version = version
 
     @commands.command()
-    async def help(ctx, *, theme = None):
+    async def help(self, ctx, *, theme = None):
         # Aide générale
         if theme == None:
             file = discord.File("/home/container/Pictures/kowalsky_lunettes.png", filename = "kowalskypp.png")
+            msg = """> `help` : tsais la commande de base pour l'aide
+            > `help troll` : là c'est pour afficher les commandes stylées :sunglasses:
+            > `help chad` : affiche l'aide pour les chads
+            > `serverinfo` : affiche des infos sur le serv mais on s'en fout
+            > `say <truc>` : ça dit le truc
+            > `support` : envoie le lien du serveur d'aide
+            > `invite` : envoie un lien d'invitation du bot
+            > `ping` : affiche la latence du bot
+            > `suggestion` : envoie une suggestion aux devs (ne fonctionne qu'en dm avec le bot)
+            > `activo <commande>` : active la commande sur le serveur (commandes désactivables : csc, randomping, ph, tg, fonction quoi/feur, saydm, haagrah, ratio, sus, cheh, flop, nwar)
+            > `desactivo <commande>` : désactive la commande sur le serveur (mêmes commandes que `activo`)"""
             embed = discord.Embed(title = "**Aide de Kowalsky**", color = bleu)
             embed.set_thumbnail(url = "attachment://kowalskypp.png")
-            embed.add_field(name = "Important", value = "[exemple] = argument requis, (exemple) = argument optionnel", inline = False)
-            embed.add_field(name = "k.help", value = "tsais la commande de base", inline = False)
-            embed.add_field(name = "k.help troll", value = "là c les commandes stylées :sunglasses:", inline = False)
-            embed.add_field(name = "k.help chad", value = "affiche l'aide pour les chads", inline = False)
-            embed.add_field(name = "k.serverinfo", value = "des infos sur le serv mais on s'en fout", inline = False)
-            embed.add_field(name = "k.say [truc]", value = "il dit le truc", inline = False)
-            embed.add_field(name = "k.support", value = "envoie le lien du serveur d'aide", inline = False)
-            embed.add_field(name = "k.invite", value = "envoie un lien d'invitation du bot", inline = False)
-            embed.add_field(name = "k.ping", value = "affiche la latence du bot")
-            embed.add_field(name = "k.suggestion", value = "envoie une suggestion concernant le bot (ne fonctionne que dans les dm du bot)")
-            embed.add_field(name = "k.activo [command]", value = "active la commande sur le serveur (permissions : admin, commandes désactivables : csc, randomping, ph, tg, fonction quoi/feur, saydm, haagrah, ratio, sus, cheh, flop, nwar)", inline = False)
-            embed.add_field(name = "k.desactivo [command]", value = "désactive la commande (mêmes commandes que activo, permissions : admin)", inline = False)
+            embed.add_field(name = "Important", value = "<exemple> = argument requis, (exemple) = argument optionnel", inline = False)
+            embed.add_field(name = "Commandes", value = msg, inline = False)
             embed.set_footer(text = "version actuelle : " + version)
-            await ctx.send(embed = embed, file = file)
+            await ctx.send(embed = embed, file = file) 
 
         # Aide troll
         elif theme == "troll":
             file = discord.File("/home/container/Pictures/kowalsky_lunettes.png", filename = "kowalskypp.png")
 
             embed = discord.Embed(title = "**Commandes stylées :sunglasses:**", color = bleu)
+            msg = """> `tg <membre>`
+            > `coucou`
+            > `ph`
+            > `randomping`
+            > `matchup`
+            > `stylé`
+            > `csc`
+            > `haagrah`
+            > `random`
+            > `sus`
+            > `cheh`
+            > `ratio`
+            > `flop`
+            > `nwar`
+            > `k`
+            et d'autres qui arrivent :sunglasses:"""
             embed.set_thumbnail(url = "attachment://kowalskypp.png")
-            embed.add_field(name = "Important", value = "[exemple] = argument requis, (exemple) = argument optionnel\n\nPas d'infos sur ce que font les commandes, à vous de le découvrir", inline = False)
-            embed.add_field(name = "Commandes", value = "\nk.tg [membre]\n\nk.coucou\n\nk.ph\n\nk.randomping\n\nk.matchup ou k.mu\n\nk.stylé\n\nk.csc\n\nk.haagrah\n\nk.random\n\nk.sus\n\nk.cheh\n\nk.flop\n\nk.nwar\n\nk.k\n\net d'autres qui arrivent...", inline = False)
+            embed.add_field(name = "Important", value = "<exemple> = argument requis, (exemple) = argument optionnel\n\nPas d'infos sur ce que font les commandes, à vous de le découvrir", inline = False)
+            embed.add_field(name = "Commandes", value = msg, inline = False)
             embed.set_footer(text = "version actuelle : " + version)
             await ctx.send(embed = embed, file = file)
 
@@ -64,19 +81,21 @@ class CommandesBase(commands.Cog):
             file = discord.File("/home/container/Pictures/kowalsky_lunettes.png", filename = "kowalskypp.png")
             embed = discord.Embed(title = "Aide chads", color = bleu)
             embed.set_thumbnail(url = "attachment://kowalskypp.png")
+            msg = """> `collection` : affiche ta collection de Chads
+            > `getchad` : récupère tes deux Chads du jour ! slowmode: 1j
+            > `mychad <rang>` : affiche le Chad du rang en question
+            > `upgrade <rang>` : si t'as plus de 5 Chads de ce rang, il s'améliore au rang d'au-dessus
+            > `trade <mention>` : permet d'échanger un Chad avec le mec mentionné
+            > `chadsong` : joue la douce mélodie des gigachads pour satisfaire tes tympans
+            > `chadtips` : affiche un conseil pour devenir un gigachad
+
+            > `routedeschads` : affiche des infos sur la Route des Chads
+            > `start` : permet de démarrer la Route des Chads
+            > `avance` : une fois par jour, avance dans ta Route des Chads
+            > `leaderboard` : affiche les différents classements du bot
+            """
             embed.add_field(name = "Présentation", value = "Le Chad Game est un jeu de collection de chads, avec 10 rangs de chads différents, tous plus rares les uns que les autres !\n\nLe but, c'est de tous les avoir, jpense t'avais compris", inline = False)
-            embed.add_field(name = "k.collection", value = "Affiche ta collection de chads", inline = False)
-            embed.add_field(name = "k.getchad", value = "Obtiens ton chad du jour ! slowmode : 1j", inline = False)
-            embed.add_field(name = "k.mychad [rang du chad]", value = "affiche le chad du rang en question si tu l'as", inline = False)
-            embed.add_field(name = "k.upgrade [rang]", value = "Si t'as plus de 5 chads de ce rang, tu perds 5 chads de ce rang et t'en gagne 1 du rang d'au-dessus", inline = False)
-            #embed.add_field(name = "k.trade [membre avec qui échanger]", value = "permet d'échanger des chads avec quelqu'un dautre (si vous avez les chads que vous proposez bien entendu)")
-            embed.add_field(name = "k.chadsong", value = "joue la douce mélodie des gigachads afin de satifaire vos tympans", inline = False)
-            embed.add_field(name = "k.chadtips", value = "affiche un conseil pour devenir un gigachad", inline = False)
-            embed.add_field(name = "k.topcol", value = "affiche un classement des collections des membres du serveur (faites `k.topcol g` pour avoir le classement général)", inline = False)
-            embed.add_field(name = "k.start", value = "démarre ta Route des Chads", inline = False)
-            embed.add_field(name = "k.avance", value = "avance dans ta Route des Chads ! slowmode : 1j", inline = False)
-            embed.add_field(name = "k.routedeschads", value = "affiche des infos sur la Route des Chads", inline = False)
-            embed.add_field(name = "k.leaderboard/k.lb",value = "affiche un classement de la route des chads dans le serveur (faites `k.lb g` pour afficher le classement général)", inline = False)
+            embed.add_field(name = "Commandes", value = msg)
             embed.set_footer(text = "version actuelle : " + version)
             await ctx.send(embed = embed, file = file)
 
@@ -148,7 +167,14 @@ class CommandesBase(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def ping(self, ctx):
-        await ctx.send(f"Latence : {int(self.bot.latency*1000)} ms")
+        ping = int(self.bot.latency*1000)
+        if ping <= 50:
+            msg = "||ça bombarde youhou||"
+        elif ping <= 100:
+            msg = "||on lag un peu mais oklm||"
+        else:
+            msg ="||wtf c'est quoi ce lag jsuis sur neptune ou quoi||"
+        await ctx.send(f"Latence : {ping} ms {msg}")
 
 
      # Serverinfo :

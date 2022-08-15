@@ -165,7 +165,7 @@ class CommandsChads(commands.Cog):
                     chad_id = result[i][0]
                     chad_number = result[i][1]
                     if chad_number > 0:
-                        txt += f"{chads_ranks[chad_id]} : **{chads_names[chad_id]}** x{chad_number}\n\n"
+                        txt += f"{chads_ranks[chad_id]} : **{chads_names[chad_id]}** x{chad_number}\n"
                 embed.add_field(name = "Tes chads", value = txt)
                 await ctx.send(embed = embed)
 
@@ -181,7 +181,7 @@ class CommandsChads(commands.Cog):
                     chad_id = result[i][0]
                     chad_number = result[i][1]
                     if chad_number > 0:
-                        txt += f"{chads_ranks[chad_id]} : **{chads_names[chad_id]}** x{chad_number}\n\n"
+                        txt += f"{chads_ranks[chad_id]} : **{chads_names[chad_id]}** x{chad_number}\n"
                 embed.add_field(name = f"Chads de {member.name}", value = txt)
                 await ctx.send(embed = embed)
 
@@ -324,6 +324,7 @@ class CommandsChads(commands.Cog):
                 await self.create_leaderboard(ctx, lb)
             elif choix == '3':
                 await self.create_leaderboard(ctx, lb, 'g')
+
             
         
     async def create_leaderboard(self, ctx, lb, arg = None):   
