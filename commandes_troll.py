@@ -124,12 +124,7 @@ I am for real
 Never meant to make my booty shit
 I apologize I shit my pants
 
-You know sometimes you just gotta shit your pants
-Let that shit drop
-It feels so nice when it just comes out
-So fluffy you know
-It feels amazing when you shit your pants
-Not on the toilet, but on your pants
+
 So amazing (Shitted my pants)"""]
 
 liste_sus = os.listdir('/home/container/Pictures/sus')
