@@ -40,7 +40,7 @@ class CommandesBase(commands.Cog):
             > `invite` : envoie un lien d'invitation du bot
             > `ping` : affiche la latence du bot
             > `suggestion` : envoie une suggestion aux devs (ne fonctionne qu'en dm avec le bot)
-            > `activo <commande>` : active la commande sur le serveur (commandes désactivables : csc, randomping, ph, tg, fonction quoi/feur, saydm, haagrah, ratio, sus, cheh, flop, nwar)
+            > `activo <commande>` : active la commande sur le serveur (commandes désactivables : csc, randomping, ph, tg, fonction quoi/feur, saydm, haagrah, ratio, sus, cheh, flop, nwar, con, masterclass)
             > `desactivo <commande>` : désactive la commande sur le serveur (mêmes commandes que `activo`)"""
             embed = discord.Embed(title = "**Aide de Kowalsky**", color = bleu)
             embed.set_thumbnail(url = "attachment://kowalskypp.png")
@@ -70,6 +70,7 @@ class CommandesBase(commands.Cog):
             > `nwar`
             > `k`
             > `con`
+            > `masterclass`
             et d'autres qui arrivent :sunglasses:"""
             embed.set_thumbnail(url = "attachment://kowalskypp.png")
             embed.add_field(name = "Important", value = "<exemple> = argument requis, (exemple) = argument optionnel\n\nPas d'infos sur ce que font les commandes, à vous de le découvrir", inline = False)

@@ -132,7 +132,7 @@ liste_sus = os.listdir('/home/container/Pictures/sus')
 
 liste_choix = [liste_random_words, liste_random_pics]
 
-liste_commandes = {'quoi': 1, 'feur': 1, 'tg' : 2, 'ph' : 3, 'randomping' : 4, 'csc' : 5, 'saydm' : 6, 'haagrah' : 7, 'ratio': 8, 'sus': 9, 'cheh': 10, 'flop': 11, 'nwar': 12}
+liste_commandes = {'quoi': 1, 'feur': 1, 'tg' : 2, 'ph' : 3, 'randomping' : 4, 'csc' : 5, 'saydm' : 6, 'haagrah' : 7, 'ratio': 8, 'sus': 9, 'cheh': 10, 'flop': 11, 'nwar': 12, 'con': 13, 'masterclass': 14}
 
 
 liste_gifs = ["https://tenor.com/view/dancing-black-big-gif-20472579",
@@ -156,8 +156,12 @@ liste_cons = [
     "t'as pas inventé la poudre mais tu devais pas être loin quand elle a explosé",
     "si les cons volaient tu serais chef d'escadrille",
     "si on mettait les cons sur orbite t'aurais pas fini de tourner",
-    "t'es pas le chocapic le plus fort en chocolat"
+    "t'es pas le chocapic le plus fort en chocolat",
+    "t'es pas le lampadaire le plus lumineux de la rue",
+    "t'es pas la pierre la plus moussue qui roule"
 ]
+
+liste_masterclass = os.listdir('/home/container/Pictures/masterclass')
 
 # Couleurs :
 
@@ -192,17 +196,31 @@ class CommandesTroll(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+
+    @commands.command()
+    async def masterclass(self, ctx):
+        if check_command(ctx.guild.id, 'masterclass'):
+            ad = rd.choice(liste_masterclass)
+            file = discord.File(ad)
+            await ctx.send(file = file)
+        else:
+            await ctx.send('Cette commande est désactivée ici')
+
+
     @commands.command(aliases = ['tcon'])
     async def con(self, ctx, member: discord.Member = None):
-        if member != None:
-            if is_vipe_or_bot(member.id):
-                await ctx.send("nan c'est toi t'es con")
-            elif member == ctx.author:
-                await ctx.send("nooon t'es pas con bebou aie confiance en toi :pleading_face::heart::heart:")
+        if check_command(ctx.guild.id, 'nwar'):
+            if member != None:
+                if is_vipe_or_bot(member.id):
+                    await ctx.send("nan c'est toi t'es con")
+                elif member == ctx.author:
+                    await ctx.send("nooon t'es pas con bebou aie confiance en toi :pleading_face::heart::heart:")
+                else:
+                    await ctx.send(f"{rd.choice(liste_cons)} {member.mention}")
             else:
-                await ctx.send(f"{rd.choice(liste_cons)} {member.mention}")
+                await ctx.send(rd.choice(liste_cons))
         else:
-            await ctx.send(rd.choice(liste_cons))
+            await ctx.send('Cette commande est désactivée ici :x:')
             
 
     @commands.command()
