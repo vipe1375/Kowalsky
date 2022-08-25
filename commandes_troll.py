@@ -200,7 +200,7 @@ class CommandesTroll(commands.Cog):
     @commands.command()
     async def masterclass(self, ctx):
         if check_command(ctx.guild.id, 'masterclass'):
-            ad = rd.choice(liste_masterclass)
+            ad = f"/home/container/Pictures/masterclass/{rd.choice(liste_masterclass)}"
             file = discord.File(ad)
             await ctx.send(file = file)
         else:
@@ -209,7 +209,7 @@ class CommandesTroll(commands.Cog):
 
     @commands.command(aliases = ['tcon'])
     async def con(self, ctx, member: discord.Member = None):
-        if check_command(ctx.guild.id, 'nwar'):
+        if check_command(ctx.guild.id, 'con'):
             if member != None:
                 if is_vipe_or_bot(member.id):
                     await ctx.send("nan c'est toi t'es con")
@@ -459,3 +459,35 @@ class CommandesTroll(commands.Cog):
             await ctx.send(file = file, embed = embed)
         else:
             await ctx.send("Cette commande est désactivée ici :pensive:")
+
+    
+    # Activation / désactivation de commandes
+    @commands.command()
+    @commands.has_permissions(administrator = True)
+    async def activo(self, ctx, command_name):
+        
+        command_id = liste_commandes[command_name]
+        database_handler.on(ctx.guild.id, command_id)
+        # création de l'embed
+        embed = discord.Embed(title = "Commande activée mon reuf :white_check_mark:", color = vert)
+        await ctx.send(embed = embed)
+
+    @commands.command()
+    @commands.has_permissions(administrator = True)
+    async def desactivo(self, ctx, command_name):
+        
+        command_id = liste_commandes[command_name]
+        database_handler.off(ctx.guild.id, command_id)
+        # création de l'embed
+        embed = discord.Embed(title = "Commande désactivée mon reuf :white_check_mark:", color = vert)
+        await ctx.send(embed = embed)
+
+    @commands.command()
+    async def check(self, ctx, command_name):
+        result = check_command(ctx.guild.id, command_name)
+        if result == True:
+            embed = discord.Embed(title = "Ici c'est activé :sunglasses:", color = bleu)
+            await ctx.send(embed = embed)
+        else:
+            embed = discord.Embed(title = "Ici c'est désactivé :pensive:", color = bleu)
+            await ctx.send(embed = embed)

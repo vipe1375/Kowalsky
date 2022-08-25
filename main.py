@@ -53,11 +53,7 @@ async def on_ready():
 # Boucle de changement de statut
 @tasks.loop(seconds = 10)
 async def change_status():
-    a1 = discord.Activity(name = f"{len(bot.guilds)} serveurs", type = discord.ActivityType.watching)
-    a2 = discord.Activity(name = f"k.help", type = discord.ActivityType.playing)
-    a3 = discord.Activity(name = f"k.invite | k.support", type = discord.ActivityType.playing)
-    activities = [a1, a2, a3]
-    await bot.change_presence(activity=rd.choice(activities))
+    await bot.change_presence(activity=rd.choice([discord.Activity(name = f"{len(bot.guilds)} serveurs", type = discord.ActivityType.watching), discord.Activity(name = f"k.help", type = discord.ActivityType.playing), discord.Activity(name = f"k.invite | k.support", type = discord.ActivityType.playing)]))
 
 # Boucle de redémarrage des cogs
 @tasks.loop(seconds = 50)
@@ -83,7 +79,7 @@ async def restart_cogs():
 #----------------| INFOS |-----------------#
 
 # Liste des commandes désactivables :
-liste_commandes = commandes_troll.liste_commandes
+liste_commandes = {'quoi': 1, 'feur': 1, 'tg' : 2, 'ph' : 3, 'randomping' : 4, 'csc' : 5, 'saydm' : 6, 'haagrah' : 7, 'ratio': 8, 'sus': 9, 'cheh': 10, 'flop': 11, 'nwar': 12, 'con': 13, 'masterclass': 14}
 
 # Couleurs :
 bleu = 0x2BE4FF       #Normal
@@ -138,34 +134,7 @@ async def restart(ctx):
 
 
 
-# Activation / désactivation de commandes
-@bot.command()
-@commands.has_permissions(administrator = True)
-async def activo(ctx, command_name):
-    command_id = liste_commandes[command_name]
-    database_handler.on(ctx.guild.id, command_id)
-    # création de l'embed
-    embed = discord.Embed(title = "Commande activée mon reuf :white_check_mark:", color = vert)
-    await ctx.send(embed = embed)
 
-@bot.command()
-@commands.has_permissions(administrator = True)
-async def desactivo(ctx, command_name):
-    command_id = liste_commandes[command_name]
-    database_handler.off(ctx.guild.id, command_id)
-    # création de l'embed
-    embed = discord.Embed(title = "Commande désactivée mon reuf :white_check_mark:", color = vert)
-    await ctx.send(embed = embed)
-
-@bot.command()
-async def check(ctx, command_name):
-    result = check_command(ctx.guild.id, command_name)
-    if result == True:
-        embed = discord.Embed(title = "Ici c'est activé :sunglasses:", color = bleu)
-        await ctx.send(embed = embed)
-    else:
-        embed = discord.Embed(title = "Ici c'est désactivé :pensive:", color = bleu)
-        await ctx.send(embed = embed)
 
 
 @bot.command()
