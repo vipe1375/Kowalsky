@@ -5,10 +5,11 @@ import random as rd
 import asyncio
 from PIL import Image
 
-from discord_slash import ButtonStyle, SlashCommand
-from discord_slash.utils.manage_components import *
 from database_handler_k import DatabaseHandler
 database_handler = DatabaseHandler("database_kowalsky.db")
+
+from select_menu import SelectView, choose_leaderboard
+from buttons import trade_buttons
 
 intents = discord.Intents.default()
 intents.members = True
@@ -286,137 +287,10 @@ class CommandsChads(commands.Cog):
         
         # Embed avec menu select
         embed1 = discord.Embed(title = "Choix du classement", description = "Choisis le classement à afficher avec le menu en-dessous mon reuf", color = bleu)
-        liste_classements = [
-            create_select_option('Collections - serveur', value = '0'),
-            create_select_option('Collections - général', value = '1'),
-            create_select_option('Route des Chads - serveur', value = '2'),
-            create_select_option('Route des Chads - général', value = '3')
-            ]
-        select = create_select(
-            liste_classements,
-            placeholder="Classement à afficher",
-            min_values=1,
-            max_values=1)
 
-        menu_msg = await ctx.send(embed = embed1, components=[create_actionrow(select)])
+        menu_msg = await ctx.send(embed = embed1, view=SelectView(menu_msg))
 
-        # interaction de l'utilisateur
-        def check_menu(m):
-            
-            
-            
-            return m.author.id == ctx.author.id and m.origin_message.id == menu_msg.id
-        choice_ctx = await wait_for_component(self.bot, components=select, check=check_menu, timeout = 30)
-        await choice_ctx.defer(ignore=True)
-        choix = choice_ctx.values[0]
-
-        await menu_msg.delete()
-        if choix == '0' or choix == '1':
-            lb = database_handler.lb_chadscore()
-            if choix == '0':
-                await self.topcol(ctx, lb)
-            elif choix == '1':
-                await self.topcol(ctx, lb, 'g')
-            
-        elif choix == '2' or choix == '3':
-            lb = database_handler.leaderboard()
-            if choix == '2':
-                await self.create_leaderboard(ctx, lb)
-            elif choix == '3':
-                await self.create_leaderboard(ctx, lb, 'g')
-
-            
         
-    async def create_leaderboard(self, ctx, lb, arg = None):   
-
-        if arg == "g" or arg == "global":
-            txt = f""
-            for i in range(11):
-                user = self.bot.get_user(lb[i][0])
-
-                if lb[i][1] == 21 or lb[i][1] == 0:
-                    txt = txt + f"**{user.name} **est devenu un Chad Suprême :sunglasses:\n\n"
-                else:
-                    txt = txt + f"**{user.name} :** étape {lb[i][1]}\n"
-
-            embed = discord.Embed(title = "Classement de la Route des Chads", color = bleu, description = txt)
-            await ctx.send(embed = embed)
-
-        elif arg == None:
-            txt = f""
-            for i in range(11):
-                user = ctx.guild.get_member(lb[i][0])
-                if user != None:
-                    if lb[i][1] == 21 or lb[i][1] == 0:
-                        txt = txt + f"**{user.name} **est devenu un Chad Suprême :sunglasses:\n\n"
-                    else:
-                        txt = txt + f"**{user.name} :** étape {lb[i][1]}\n"
-            embed = discord.Embed(title = f"Classement de la Route des Chads dans {ctx.guild.name}", color = bleu, description = txt)
-            await ctx.send(embed = embed)
-
-        else:
-            await ctx.send("Cet argument n'est pas reconnu")
-
-    async def topcol(self, ctx, lb, opt: str = None):
-        author_in_top = False
-
-        # Classement général
-        if opt == 'g':
-            msg = f""
-
-            for i in range(10):
-                u = self.bot.get_user(lb[i][0])
-                if u != None:
-                    if u.id == ctx.author.id:
-                        msg += f":blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore \n"
-                        author_in_top = True
-                    else:
-                        msg += f"**{i+1}.** {u.name}, {lb[i][1]} chadscore\n"
-
-            if not author_in_top:
-                for i in range(10, len(lb)):
-                    u = self.bot.get_user(lb[i][0])
-                    if u == ctx.author:
-                        msg += f"...\n:blue_circle: **{i+1}.** {u.name}, {lb[i][1]} chadscore "
-                        break
-
-            embed = discord.Embed(title = f"Classement général des collections", description = msg, color = bleu)
-            await ctx.send(embed = embed)
-        
-        # Classement par serveur
-        elif opt == None:
-            y = 0
-            
-            msg = f""
-            for i in range(len(lb)):
-                if y < 10:
-                    user = ctx.guild.get_member(lb[i][0])
-                    if user != None:
-                        if user == ctx.author:
-                            msg += f":blue_circle: **{y+1}.** {user.name}, {lb[i][1]} chadscore \n"
-                            author_in_top = True
-                        else:
-                            msg += f"**{y+1}.** {user.name}, {lb[i][1]} chadscore\n"
-                        y += 1
-                else:
-                    
-                    break
-
-
-            if not author_in_top:
-                for j in range(i, len(lb)):
-                    u = ctx.guild.get_member(lb[j][0])
-                    if u != None:
-                        if u == ctx.author:
-                            msg += f"...\n\n:blue_circle: **{y+1}.** {u.name}, {lb[j][1]} chadscore"
-                            break
-                        else:
-                            y += 1
-
-            embed = discord.Embed(title = f"Classement des collections de {ctx.guild.name}", description = msg, color = bleu)
-            await ctx.send(embed = embed)
-
-
     @commands.command()
     async def trade(self, ctx, member2 : discord.Member):
 
@@ -452,51 +326,15 @@ class CommandsChads(commands.Cog):
                 # DM du second membre
 
                 if (member_col[pos1][1] > 1) and (member2_col[pos2][1] > 1):
-                    boutons = [
-                        create_button(style=ButtonStyle.blue, label = "azy letsgo", custom_id='1'),
-                        create_button(style=ButtonStyle.blue, label="nan nsm", custom_id='2')
-                    ]
-                    action_row_buttons = create_actionrow(*boutons)
 
                     channel2 = await member2.create_dm()
                     embed = discord.Embed(title = "", color = bleu, description = f"veux tu donner un chad de **rang {chad_asked}** et recevoir un chad de **rang {chad_given}** de la part de **{member.name} **?")
                     embed.set_footer(text = "tu as 5 minutes pour répondre")
 
-                    msg = await channel2.send(embed = embed, components = [action_row_buttons])
-
                     await ctx.send(f"j'ai envoyé un dm à {member2.name} pour savoir s'il veut échanger, jte dm bientôt pour te dire s'il accepte ou pas", delete_after = 10)
 
-                    def check_buttons(m):
-                        return m.origin_message.id == msg.id
+                    await channel2.send(embed = embed, view = trade_buttons())
 
-                    confirmation = await wait_for_component(self.bot, components = action_row_buttons, check = check_buttons, timeout = 300)
-
-                    await confirmation.defer(ignore=True)
-
-                    if confirmation.custom_id == "1":
-                        # On ajoute les chads
-                        if has_chad(member2_col, chad_given):
-                            database_handler.add_chad(member2.id, chad_given, 1)
-                        else:
-                            database_handler.add_new_chad(member2.id, chad_given)
-
-                        if has_chad(member_col, chad_asked):
-                            database_handler.add_chad(member.id, chad_asked, 1)
-                        else:
-                            database_handler.add_new_chad(member.id, chad_asked)
-
-                        # On retire les chads
-                        database_handler.remove_chad(member.id, chad_given)
-                        database_handler.remove_chad(member2.id, chad_asked)
-                        channel = await member.create_dm()
-                        await channel.send(f"échange réussi ! {member2.name} t'a bien donné un chad de rang {chad_asked}, et tu as donné un chad de rang {chad_given} !")
-                        await channel2.send(f"échange réussi ! {member.name} t'a bien donné un chad de rang {chad_given}, et tu as donné un chad de rang {chad_asked} !")
-                        database_handler.update_chadscore(ctx.author.id)
-                    else:
-
-                        channel = await member.create_dm()
-                        await channel.send(f"échange refusé par {member2.name}")
-                        await channel2.send(f"échange refusé")
                 else:
                     await ctx.send("Vous avez pas assez de chads dsl")
             else:

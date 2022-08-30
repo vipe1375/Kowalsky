@@ -2,8 +2,6 @@
 import discord
 from discord.ext import commands, tasks
 from discord.utils import get
-from discord_slash import ButtonStyle, SlashCommand
-from discord_slash.utils.manage_components import *
 
 # autres modules
 import time as t
@@ -13,6 +11,9 @@ from datetime import timedelta
 import traceback
 import sys
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # imports cogs
 import commandes_troll
@@ -21,19 +22,18 @@ from commandes_admin import CommandesAdmin
 from commandes_base import CommandesBase
 from chads import CommandsChads
 from chads2 import CommandsChads2
-from token_k import token_kowalsky
 from version_k import version
 
 # database
 from database_handler_k import DatabaseHandler
 database_handler = DatabaseHandler("database_kowalsky.db")
+token_k = os.getenv("token_kowalsky")
 
 # gestion discord 2
 intents = discord.Intents.all()
 intents.members = True
 bot = commands.Bot(command_prefix = "k.", intents = intents)
 bot.remove_command("help")
-slash = SlashCommand(bot)
 
 # démarrage du bot
 
@@ -234,7 +234,7 @@ bot.load_extension("commandes_admin")
 bot.load_extension("commandes_troll")
 bot.load_extension("chads")
 bot.load_extension("chads2")
-bot.run(token_kowalsky)
+bot.run(token_k)
 
 
 

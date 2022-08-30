@@ -5,8 +5,6 @@ import random as rd
 import asyncio
 from PIL import Image
 
-from discord_slash import ButtonStyle, SlashCommand
-from discord_slash.utils.manage_components import *
 from database_handler_k import DatabaseHandler
 database_handler = DatabaseHandler("database_kowalsky.db")
 
