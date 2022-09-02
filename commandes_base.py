@@ -15,8 +15,8 @@ from version_k import version
 def is_vipe(id):
     return id == 691380397673545828
 
-def setup(bot):
-    bot.add_cog(CommandesBase(bot))
+async def setup(bot):
+    await bot.add_cog(CommandesBase(bot))
 
 
 # ------------------- COMMANDES ---------------#
@@ -105,7 +105,6 @@ class CommandesBase(commands.Cog):
     async def post(self, ctx, *, msg):
         if is_vipe(ctx.author.id):
             channels = database_handler.get_channels()
-            msg = str(msg + "\n\n disponible à partir de minuit")
             embed = discord.Embed(title = "Mise à jour", color = bleu, description = msg)
             embed.set_footer(text = f"version actuelle : {version}")
             for i in channels:

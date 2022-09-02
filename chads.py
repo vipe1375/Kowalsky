@@ -15,8 +15,8 @@ intents = discord.Intents.default()
 intents.members = True
 
 
-def setup(bot):
-    bot.add_cog(CommandsChads(bot))
+async def setup(bot):
+    await bot.add_cog(CommandsChads(bot))
 
 # INFOS
 chads_adresses = {1: "/home/container/Pictures/chads/chad_1.jpg",
@@ -288,7 +288,7 @@ class CommandsChads(commands.Cog):
         # Embed avec menu select
         embed1 = discord.Embed(title = "Choix du classement", description = "Choisis le classement à afficher avec le menu en-dessous mon reuf", color = bleu)
 
-        menu_msg = await ctx.send(embed = embed1, view=SelectView(menu_msg))
+        await ctx.send(embed = embed1, view=SelectView(self.bot))
 
         
     @commands.command()

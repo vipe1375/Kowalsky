@@ -32,10 +32,23 @@ token_k = os.getenv("token_kowalsky")
 # gestion discord 2
 intents = discord.Intents.all()
 intents.members = True
-bot = commands.Bot(command_prefix = "k.", intents = intents)
-bot.remove_command("help")
+
 
 # démarrage du bot
+
+class KBot(commands.Bot):
+    def __init__(self):
+        super().__init__(command_prefix="k.", intents = intents, application_id = 926864538681368626)
+
+    async def setup_hook(self) -> None:
+        await self.load_extension("commandes_base")
+        await self.load_extension("commandes_admin")
+        await self.load_extension("commandes_troll")
+        await self.load_extension("chads")
+        await self.load_extension("chads2")
+
+bot = KBot()
+bot.remove_command('help')
 
 @bot.event
 async def on_ready():
@@ -65,11 +78,11 @@ async def check_restart_cogs():
 
 @tasks.loop(hours=24)
 async def restart_cogs():
-    bot.reload_extension('commandes_base')
-    bot.reload_extension('commandes_admin')
-    bot.reload_extension('commandes_troll')
-    bot.reload_extension('chads')
-    bot.reload_extension('chads2')
+    await bot.reload_extension('commandes_base')
+    await bot.reload_extension('commandes_admin')
+    await bot.reload_extension('commandes_troll')
+    await bot.reload_extension('chads')
+    await bot.reload_extension('chads2')
     channel = bot.get_channel(logs_channel_id)
     await channel.send("restart cogs :green_circle:")
 
@@ -125,10 +138,10 @@ def check_hierarchy(member1 : discord.Member, member2 : discord.Member) -> bool:
 @bot.command()
 async def restart(ctx):
     if is_vipe(ctx.author.id):
-        bot.reload_extension('commandes_base')
-        bot.reload_extension('commandes_admin')
-        bot.reload_extension('commandes_troll')
-        bot.reload_extension('chads')
+        await bot.reload_extension('commandes_base')
+        await bot.reload_extension('commandes_admin')
+        await bot.reload_extension('commandes_troll')
+        await bot.reload_extension('chads')
         channel = bot.get_channel(logs_channel_id)
         await channel.send("restart cogs :green_circle:")
 
@@ -202,12 +215,11 @@ async def on_command_error(ctx, error):
             embed10 = discord.Embed(description = "y'a une erreur mais je sais pas trop quoi :x:", color = orange)
             await ctx.send(embed = embed10)
             l = traceback.format_exception(type(error), error, error.__traceback__)
-            msg = "`"
-            for i in l:
-                msg += i
             channel = bot.get_channel(errors_channel_id)
-            msg += "`"
-            await channel.send(msg)
+            
+            for i in l:
+                await channel.send(f"`{i}`")
+            
     else:
 
         l = traceback.format_exception(type(error), error, error.__traceback__)
@@ -227,13 +239,7 @@ async def on_guild_join(guild):
 
     await channel.send(f"nouveau serveur : {guild.name}")
 
-
-
-bot.load_extension("commandes_base")
-bot.load_extension("commandes_admin")
-bot.load_extension("commandes_troll")
-bot.load_extension("chads")
-bot.load_extension("chads2")
+print(token_k)
 bot.run(token_k)
 
 

@@ -11,8 +11,8 @@ database_handler = DatabaseHandler("database_kowalsky.db")
 intents = discord.Intents.default()
 intents.members = True
 
-def setup(bot):
-    bot.add_cog(CommandsChads2(bot))
+async def setup(bot):
+    await bot.add_cog(CommandsChads2(bot))
 
 
 # INFOS

@@ -10,8 +10,8 @@ vert = 0x00FF66 #Unban/unmute/free
 rouge = 0xFF2525 #Ban/mute/goulag
 orange = 0xFFAA26 #Erreur
 
-def setup(bot):
-    bot.add_cog(CommandesAdmin(bot))
+async def setup(bot):
+    await bot.add_cog(CommandesAdmin(bot))
 
 def is_vipe(id):
     return id == 691380397673545828

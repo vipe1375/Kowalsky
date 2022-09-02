@@ -13,8 +13,8 @@ import os
 from database_handler_k import DatabaseHandler
 database_handler = DatabaseHandler("database_kowalsky.db")
 
-def setup(bot):
-    bot.add_cog(CommandesTroll(bot))
+async def setup(bot):
+    await bot.add_cog(CommandesTroll(bot))
 
 # ------------ INFOS ---------------- #
 
