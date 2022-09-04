@@ -127,6 +127,6 @@ class choose_leaderboard(discord.ui.Select):
 
 
 class SelectView(View):
-    def __init__(self, bot, msg, timeout = None):
+    def __init__(self, bot, timeout = None):
         super().__init__(timeout=timeout)
-        self.add_item(choose_leaderboard(msg, bot))
+        self.add_item(choose_leaderboard(bot))

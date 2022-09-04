@@ -333,7 +333,7 @@ class CommandsChads(commands.Cog):
 
                     await ctx.send(f"j'ai envoyé un dm à {member2.name} pour savoir s'il veut échanger, jte dm bientôt pour te dire s'il accepte ou pas", delete_after = 10)
 
-                    await channel2.send(embed = embed, view = trade_buttons())
+                    await channel2.send(embed = embed, view = trade_buttons(member1=member, member2=member2, member1_col=member_col, member2_col=member2_col, chad_given=chad_given, chad_asked=chad_asked))
 
                 else:
                     await ctx.send("Vous avez pas assez de chads dsl")

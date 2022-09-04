@@ -33,6 +33,7 @@ class trade_buttons(View):
 
     @button(label = "azy", emoji='👍')
     async def azy(self, itr: discord.Interaction, button: Button):
+        button.disabled = True
         # On ajoute les chads
         if has_chad(self.member2_col, self.chad_given):
             database_handler.add_chad(self.member2.id, self.chad_given, 1)
@@ -56,6 +57,7 @@ class trade_buttons(View):
 
     @button(label = "nan", emoji = '👎')
     async def nan(self, itr: discord.Interaction, button: Button):
+        button.disabled = True
         channel = await self.member1.create_dm()
         await channel.send(f"échange refusé par {self.member2.name}")
         await self.member2.send(f"échange refusé")
