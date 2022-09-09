@@ -8,6 +8,7 @@ intents.members = True
 import time as t
 import random as rd
 import os
+import traceback
 
 # Database:
 from database_handler_k import DatabaseHandler
@@ -163,7 +164,7 @@ liste_cons = [
 
 liste_masterclass = os.listdir('/home/container/Pictures/masterclass')
 
-liste_sons = os.listdir('/home/container/sounds')
+liste_sons = os.listdir('/home/container/Sounds')
 
 # Couleurs :
 
@@ -195,7 +196,7 @@ def is_vipe_or_bot(id):
 
 
 class CommandesTroll(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     
@@ -220,8 +221,12 @@ class CommandesTroll(commands.Cog):
                     await ctx.send('ce son existe pas bro')
                     
                 else:
-                    sound_path = f"/home/container/sounds/{sound}.mp3"
-            voc = await voice_channel.connect()
+                    sound_path = f"/home/container/Sounds/{sound}.mp3"
+            try:
+                voc = await voice_channel.connect()
+            except:
+                await ctx.send("je parle là attends que j'aie fini stp")
+                return
             voc.play(discord.FFmpegPCMAudio(source=sound_path))
             while voc.is_playing():
                 t.sleep(0.1)

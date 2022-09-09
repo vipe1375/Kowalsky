@@ -419,7 +419,7 @@ class CommandsChads2(commands.Cog):
                 await ctx.send("fais `k.start` pour pouvoir jouer la route des chads !")
                 await self.avance.reset_cooldown(ctx)
         except:
-            await self.avance.reset_cooldown(ctx)
+            self.avance.reset_cooldown(ctx)
 
     @avance.error
     async def avance_error(self, ctx, error):
