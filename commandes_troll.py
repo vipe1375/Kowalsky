@@ -132,7 +132,7 @@ liste_sus = os.listdir('/home/container/Pictures/sus')
 
 liste_choix = [liste_random_words, liste_random_pics]
 
-liste_commandes = {'quoi': 1, 'feur': 1, 'tg' : 2, 'ph' : 3, 'randomping' : 4, 'csc' : 5, 'saydm' : 6, 'haagrah' : 7, 'ratio': 8, 'sus': 9, 'cheh': 10, 'flop': 11, 'nwar': 12, 'con': 13, 'masterclass': 14}
+liste_commandes = {'quoi': 1, 'feur': 1, 'tg' : 2, 'ph' : 3, 'randomping' : 4, 'csc' : 5, 'saydm' : 6, 'haagrah' : 7, 'ratio': 8, 'sus': 9, 'cheh': 10, 'flop': 11, 'nwar': 12, 'con': 13, 'masterclass': 14, 'tts':15}
 
 
 liste_gifs = ["https://tenor.com/view/dancing-black-big-gif-20472579",
@@ -162,6 +162,8 @@ liste_cons = [
 ]
 
 liste_masterclass = os.listdir('/home/container/Pictures/masterclass')
+
+liste_sons = os.listdir('/home/container/sounds')
 
 # Couleurs :
 
@@ -195,6 +197,37 @@ def is_vipe_or_bot(id):
 class CommandesTroll(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    
+    @commands.command()
+    async def tts(self, ctx: commands.Context, sound: str = None):
+        if check_command(ctx.guild.id, 'tts'):
+
+            if ctx.author.voice == None:
+                await ctx.send("Tu n'es pas dans un salon vocal")
+                return
+            else:
+                voice_channel = ctx.author.voice.channel
+                
+                
+            if sound == None:
+                sound_path = rd.choice(liste_sons)
+                await ctx.send('mets un nom de son bro')
+                return
+            else:
+                sound_name = f"{sound}.mp3"
+                if sound_name not in liste_sons:
+                    await ctx.send('ce son existe pas bro')
+                    
+                else:
+                    sound_path = f"/home/container/sounds/{sound}.mp3"
+            voc = await voice_channel.connect()
+            voc.play(discord.FFmpegPCMAudio(source=sound_path))
+            while voc.is_playing():
+                t.sleep(0.1)
+            await voc.disconnect()
+        else:
+            await ctx.send("Cette commande est désactivée ici :pensive:")
 
 
     @commands.command()
