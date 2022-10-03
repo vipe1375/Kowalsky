@@ -126,7 +126,9 @@ Never meant to make my booty shit
 I apologize I shit my pants
 
 
-So amazing (Shitted my pants)"""]
+So amazing (Shitted my pants)""",
+
+"It’s😦just😐a😆sussy🖤baka😫and🥵it😱can🤯not🤭be😵that🤖bad💀I’m😈feeling😷like👅imposter👾I😲 might🥶just😩be❤️a🎊monster🤡It’s😦just😐a😆sussy🖤baka😫and🥵it😱can🤯not🤭be😵that🤖bad💀I’m😈feeling😷like👅imposter👾I😲 might🥶just😩be❤️a🎊monster🤡It’s😦just😐a😆sussy🖤baka😫and🥵it😱can🤯not🤭be😵that🤖bad💀I’m😈feeling😷like👅imposter👾I😲 might🥶just😩be❤️a🎊monster🤡It’s😦just😐a😆sussy🖤baka😫and🥵it😱can🤯not🤭be😵that🤖bad💀I’m😈feeling😷like👅imposter👾I😲 might🥶just😩be❤️a🎊monster🤡It’s😦just😐a😆sussy🖤baka😫and🥵it😱can🤯not🤭be😵that🤖bad💀I’m😈feeling😷like👅imposter👾I😲 might🥶just😩be❤️a🎊monster🤡It’s😦just😐a😆sussy🖤baka😫and🥵it😱can🤯not🤭be😵that🤖bad💀I’m😈feeling😷like👅imposter👾I😲 might🥶just😩be❤️a🎊monster🤡It’s😦just😐a😆sussy🖤baka😫and🥵it😱can🤯not🤭be😵that🤖bad💀I’m😈feeling😷like👅imposter👾I😲 might🥶just😩be❤️a🎊monster🤡It’s😦just😐a😆sussy🖤baka😫and🥵it😱can🤯not🤭be😵that🤖bad💀I’m😈feeling😷like👅imposter👾I😲 might🥶just😩be❤️a🎊monster🤡It’s😦just😐a😆sussy🖤baka😫and🥵it😱can🤯not🤭be😵that🤖bad💀I’m😈feeling😷like👅imposter👾I😲 might🥶just😩be❤️a🎊monster🤡It’s😦just"]
 
 liste_sus = os.listdir('/home/container/Pictures/sus')
 
