@@ -166,7 +166,7 @@ liste_cons = [
 
 liste_masterclass = os.listdir('/home/container/Pictures/masterclass')
 
-liste_sons = os.listdir('/home/container/Sounds')
+liste_sons = os.listdir('/home/container/sounds')
 
 # Couleurs :
 
