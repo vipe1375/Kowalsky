@@ -78,13 +78,15 @@ async def check_restart_cogs():
 
 @tasks.loop(hours=24)
 async def restart_cogs():
+    channel = bot.get_channel(logs_channel_id)
+    msg = await channel.send(":orange_circle: restarting...")
     await bot.reload_extension('commandes_base')
     await bot.reload_extension('commandes_admin')
     await bot.reload_extension('commandes_troll')
     await bot.reload_extension('chads')
     await bot.reload_extension('chads2')
-    channel = bot.get_channel(logs_channel_id)
-    await channel.send("restart cogs :green_circle:")
+    
+    await msg.edit(":green_circle: restart cogs ")
 
 
 
@@ -138,11 +140,12 @@ def check_hierarchy(member1 : discord.Member, member2 : discord.Member) -> bool:
 @bot.command()
 async def restart(ctx):
     if is_vipe(ctx.author.id):
+        channel = bot.get_channel(logs_channel_id)
+        msg = await channel.send("restarting cogs... :orange_circle:")
         await bot.reload_extension('commandes_base')
         await bot.reload_extension('commandes_admin')
         await bot.reload_extension('commandes_troll')
         await bot.reload_extension('chads')
-        channel = bot.get_channel(logs_channel_id)
         await channel.send("restart cogs :green_circle:")
 
 
@@ -213,7 +216,7 @@ async def on_command_error(ctx, error):
             pass
         else:
             embed10 = discord.Embed(description = "y'a une erreur mais je sais pas trop quoi :x:", color = orange)
-            await ctx.send(embed = embed10)
+            await ctx.send(embed = embed10, delete_after=5)
             l = traceback.format_exception(type(error), error, error.__traceback__)
             channel = bot.get_channel(errors_channel_id)
             

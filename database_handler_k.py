@@ -16,6 +16,35 @@ class DatabaseHandler():
         self.con.row_factory = sqlite3.Row
 
 
+    # ------------- Clear ----------------#
+
+    def edit_clear_status(self, guild_id: int, value: bool = False):
+        cursor = self.con.cursor()
+        if self.get_clear_status(guild_id) == 0:
+            query = "INSERT INTO Clear(status, guild_id) VALUES (?, ?);"
+        else:
+            query = "UPDATE Clear SET status = ? WHERE guild_id = ?;"
+        cursor.execute(query, (value, guild_id))
+        self.con.commit()
+        cursor.close
+
+    def get_clear_status(self, guild_id: int):
+        cursor = self.con.cursor()
+        query = f"SELECT status FROM Clear WHERE guild_id = {guild_id};"
+        cursor.execute(query)
+        result = cursor.fetchone()
+        cursor.close()
+        if result != None:
+            result = dict(result)
+            if result['status'] == 0:
+                return False
+            elif result['status'] == 1:
+                return True
+        else:
+            return 0
+
+
+
     # ------------ Updates -------------- #
 
     def setup(self):
@@ -287,35 +316,3 @@ class DatabaseHandler():
 
 
 
-#----------------- Bienvenue ------------------#
-
-    def w_create(self, guild_id):
-        cursor = self.con.cursor()
-        query = f"INSERT INTO Welcome (guild_id) VALUES ({guild_id});"
-        cursor.execute(query)
-        self.con.commit()
-        cursor.close()
-            
-    def w_edit_message(self, guild_id, message : str):
-        cursor = self.con.cursor()
-        query = f"UPDATE Welcome SET message = {message} WHERE guild_id = {guild_id};"
-        cursor.execute(query)
-        self.con.commit()
-        cursor.close()
-    
-    def w_edit_channel(self, guild_id, channel_id):
-        cursor = self.con.cursor()
-        query = f"UPDATE Welcome SET channel_id = {channel_id} WHERE guild_id = {guild_id};"
-        cursor.execute(query)
-        cursor.close()
-        
-    def w_get(self, id_guild):
-        cursor = self.con.cursor()
-        query = f"SELECT * FROM Commands WHERE guild_id = {id_guild} ;"
-        cursor.execute(query)
-        result = cursor.fetchall()
-        cursor.close()
-        return result
-    
-        
-    

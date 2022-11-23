@@ -102,6 +102,21 @@ class CommandesBase(commands.Cog):
             embed.set_footer(text = "version actuelle : " + version)
             await ctx.send(embed = embed, file = file)
 
+
+    @commands.command()
+    @commands.guild_only()
+    async def clear(self, ctx: commands.Context, opt: str = None):
+        if opt == 'on':
+            database_handler.edit_clear_status(ctx.guild.id, True)
+            await ctx.send("`c bon mon reuf yaura plus de traces`", delete_after=5)
+        elif opt == 'off':
+            database_handler.edit_clear_status(ctx.guild.id, False)
+            await ctx.send("`c bon mon reuf on verra tout`", delete_after=5)
+        else:
+            embed = discord.Embed(title = "Commande Clear", color=bleu, description="Cette commande permet d'activer/de désactiver la suppression automatique des messages de commandes troll.\n\nFaites `clear on` pour activer la suppression, `clear off` pour la désactiver")
+            await ctx.send(embed = embed)
+
+
     @commands.command()
     async def post(self, ctx, *, msg):
         if is_vipe(ctx.author.id):

@@ -195,15 +195,28 @@ def is_vipe_or_bot(id):
     return id == 691380397673545828 or id == 926864538681368626
 
 
+async def clear_if_needed(ctx: commands.Context):
+    if database_handler.get_clear_status(ctx.guild.id) == True:
+        await ctx.message.delete()
+
+
 
 
 class CommandesTroll(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
+
+    @commands.command()
+    async def tad(self, ctx):
+        await clear_if_needed(ctx)
+        file = discord.File("/home/container/Pictures/tad.jpg")
+        await ctx.send('eau au concombre :sunglasses:', file = file)
+
     
     @commands.command()
     async def tts(self, ctx: commands.Context, sound: str = None):
+        await clear_if_needed(ctx)
         if check_command(ctx.guild.id, 'tts'):
 
             if ctx.author.voice == None:
@@ -239,6 +252,7 @@ class CommandesTroll(commands.Cog):
 
     @commands.command()
     async def masterclass(self, ctx):
+        await clear_if_needed(ctx)
         if check_command(ctx.guild.id, 'masterclass'):
             ad = f"/home/container/Pictures/masterclass/{rd.choice(liste_masterclass)}"
             file = discord.File(ad)
@@ -249,6 +263,7 @@ class CommandesTroll(commands.Cog):
 
     @commands.command(aliases = ['tcon'])
     async def con(self, ctx, member: discord.Member = None):
+        await clear_if_needed(ctx)
         if check_command(ctx.guild.id, 'con'):
             if member != None:
                 if is_vipe_or_bot(member.id):
@@ -265,12 +280,13 @@ class CommandesTroll(commands.Cog):
 
     @commands.command()
     async def k(self, ctx):
-        await ctx.message.delete()
+        await clear_if_needed(ctx)
         await ctx.send("caca :poop:")
 
     @commands.command()
     @commands.guild_only()
     async def nwar(self, ctx):
+        await clear_if_needed(ctx)
         if check_command(ctx.guild.id, 'nwar'):
             await ctx.send(rd.choice(liste_gifs))
         else:
@@ -282,6 +298,7 @@ class CommandesTroll(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def cheh(self, ctx, member: discord.Member = None):
+        await clear_if_needed(ctx)
         validation = check_command(ctx.guild.id, 'cheh')
         if validation:
             if member == None:
@@ -296,6 +313,7 @@ class CommandesTroll(commands.Cog):
 
     @commands.command()
     async def random(self, ctx):
+        await clear_if_needed(ctx)
         choix_theme = rd.choice(liste_choix)
         if choix_theme == liste_random_pics:
             file = discord.File('/home/container/Pictures/random/'+rd.choice(liste_random_pics))
@@ -310,6 +328,7 @@ class CommandesTroll(commands.Cog):
     @commands.command(aliases = ['oof'])
     @commands.guild_only()
     async def haagrah(self, ctx):
+        await clear_if_needed(ctx)
         validation = check_command(ctx.guild.id, 'haagrah')
         if validation == True:
             file = discord.File('/home/container/Pictures/oof/'+rd.choice(listeOof))
@@ -324,9 +343,10 @@ class CommandesTroll(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def tg(self, ctx, member : discord.Member):
+        await clear_if_needed(ctx)
         validation = check_command(ctx.guild.id, 'tg')
         if validation == True:
-            await ctx.message.delete()
+            
             if member == ctx.author:
                 await ctx.send("t limite con toi")
             elif is_vipe_or_bot(member.id):
@@ -348,9 +368,9 @@ class CommandesTroll(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def ph(self, ctx):
+        await clear_if_needed(ctx)
         validation = check_command(ctx.guild.id, 'ph')
         if validation == True:
-            await ctx.message.delete()
             await ctx.send("https://www.pornhub.com")
         else:
             await ctx.send("Cette commande est désactivée ici :x:")
@@ -369,9 +389,9 @@ class CommandesTroll(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1,120, commands.BucketType.user)
     async def saydm(self, ctx, member : discord.Member, *, message : str):
+        await clear_if_needed(ctx)
         validation = check_command(ctx.guild.id, 'saydm')
         if validation == True:
-            await ctx.message.delete()
             dmchannel = await member.create_dm()
             await dmchannel.send(f"{message}")
             await ctx.send("`c'est envoyé mon reuf`", delete_after = 5)
@@ -389,9 +409,9 @@ class CommandesTroll(commands.Cog):
     @commands.cooldown(1, 300, commands.BucketType.member)
     @commands.guild_only()
     async def randomping(self, ctx):
+        await clear_if_needed(ctx)
         validation = check_command(ctx.guild.id, 'randomping')
         if validation == True:
-            await ctx.message.delete()
             members = ctx.guild.members
             ping = rd.choice(members)
             await ctx.send(f"{ping.mention}")
@@ -410,7 +430,7 @@ class CommandesTroll(commands.Cog):
     @commands.command(aliases = ['racism', 'raciste', 'racisme'])
     @commands.guild_only()
     async def racist(self, ctx):
-        await ctx.message.delete()
+        await clear_if_needed(ctx)
         await ctx.send("le racisme c pas bien :pensive::pensive::pensive::pensive: faut aimer les autres même s'ils sont noirs ou arabes :smiling_face_with_3_hearts::smiling_face_with_3_hearts::smiling_face_with_3_hearts::smiling_face_with_3_hearts::smiling_face_with_3_hearts:")
 
 
@@ -418,6 +438,7 @@ class CommandesTroll(commands.Cog):
 
     @commands.command(aliases = ['matchup'])
     async def mu(self, ctx):
+        await clear_if_needed(ctx)
         mu = rd.choice(listeMU)
         if mu <= 30:
             await ctx.send("il a un hc  moi jdis "+ str(100-mu) + "-" + str(mu) + " pour lui")
@@ -431,6 +452,7 @@ class CommandesTroll(commands.Cog):
 
     @commands.command()
     async def stylé(self, ctx):
+        await clear_if_needed(ctx)
         await ctx.send("de ouf :sunglasses:")
 
 
@@ -440,9 +462,9 @@ class CommandesTroll(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.member)
     async def csc(self, ctx):
+        await clear_if_needed(ctx)
         validation = check_command(ctx.guild.id, 'csc')
         if validation == True:
-            await ctx.message.delete()
             file = discord.File('/home/container/Pictures/csc/'+rd.choice(listeCSC))
             await ctx.send(file=file)
         else:
@@ -459,6 +481,7 @@ class CommandesTroll(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def ratio(self, ctx, user: discord.Member = None):
+        await clear_if_needed(ctx)
         validation = check_command(ctx.guild.id, 'ratio')
         if validation:
             if user == None:
@@ -480,6 +503,7 @@ class CommandesTroll(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def flop(self, ctx):
+        await clear_if_needed(ctx)
         validation = check_command(ctx.guild.id, 'flop')
         if validation:
             file = discord.File("/home/container/Pictures/grenouille.jpeg")
@@ -491,6 +515,7 @@ class CommandesTroll(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def sus(self, ctx):
+        await clear_if_needed(ctx)
         validation = check_command(ctx.guild.id, 'sus')
         if validation:
             embed = discord.Embed(description = 'sus bro', color = bleu)

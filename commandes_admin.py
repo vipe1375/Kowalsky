@@ -66,4 +66,12 @@ class CommandesAdmin(commands.Cog):
                     return
 
             await channel.send("pas trouvé")
+
+    @commands.command()
+    async def test_emoji(self, ctx):
+        g = self.bot.get_guild(859511797995536405)
+        e = g.fetch_emoji(1037102116671590480)
+        e2 = discord.utils.get(g.emojis, id = 1037102116671590480)
+        e3 = self.bot.get_emoji(1037102116671590480)
+        await ctx.send(f"e: {e}, e2 : {e2}, e3: {e3}, <:chad1:975871604368228372>")
             
