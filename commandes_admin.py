@@ -73,5 +73,7 @@ class CommandesAdmin(commands.Cog):
         e = g.fetch_emoji(1037102116671590480)
         e2 = discord.utils.get(g.emojis, id = 1037102116671590480)
         e3 = self.bot.get_emoji(1037102116671590480)
-        await ctx.send(f"e: {e}, e2 : {e2}, e3: {e3}, <:chad1:975871604368228372>")
+        await ctx.send(f"e: {e}, e2 : {e2}, e3: {e3}, {e_chad1}")
             
+
+e_chad1 = "<:chad1:975871604368228372>"

@@ -86,7 +86,7 @@ async def restart_cogs():
     await bot.reload_extension('chads')
     await bot.reload_extension('chads2')
     
-    await msg.edit(":green_circle: restart cogs ")
+    await msg.edit(content=":green_circle: restart cogs ")
 
 
 

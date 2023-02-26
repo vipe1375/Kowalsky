@@ -98,6 +98,18 @@ vert = 0x00FF66 #Unban/unmute/free
 rouge = 0xFF2525 #Ban/mute/goulag
 orange = 0xFFAA26 #Erreur
 
+emojis_chads = {1 : "<:chad1:975871604368228372>",
+2 : "<:chad2:975872145618001920>",
+3 : "<:chad3:975872184427900948>",
+4 :"<:chad4:975872815901335573>",
+5 : "<:chad5:975873049708605550>",
+6 : "<:chad6:975873082294165594>",
+7 : "<:chad7:975873206508453948>",
+8 : "<:chad8:975873275995508776>",
+9 : "<:chad9:975873595995734036>",
+10: ""}
+
+
 # embed avec image :
 #file = discord.File(fp = c_ad, filename = "image.png")
 #embed.set_image(url="attachment://image.png")
@@ -166,7 +178,7 @@ class CommandsChads(commands.Cog):
                     chad_id = result[i][0]
                     chad_number = result[i][1]
                     if chad_number > 0:
-                        txt += f"{chads_ranks[chad_id]} : **{chads_names[chad_id]}** x{chad_number}\n"
+                        txt += f"{chads_ranks[chad_id]} : **{chads_names[chad_id]}** x{chad_number} {emojis_chads[chad_id]}\n"
                 embed.add_field(name = "Tes chads", value = txt)
                 await ctx.send(embed = embed)
 
@@ -182,7 +194,7 @@ class CommandsChads(commands.Cog):
                     chad_id = result[i][0]
                     chad_number = result[i][1]
                     if chad_number > 0:
-                        txt += f"{chads_ranks[chad_id]} : **{chads_names[chad_id]}** x{chad_number}\n"
+                        txt += f"{chads_ranks[chad_id]} : **{chads_names[chad_id]}** x{chad_number} {emojis_chads[chad_id]}\n"
                 embed.add_field(name = f"Chads de {member.name}", value = txt)
                 await ctx.send(embed = embed)
 
@@ -271,7 +283,7 @@ class CommandsChads(commands.Cog):
     async def getmedal(self, ctx):
         if database_handler.is_finished(ctx.author.id):
             fond = Image.open('Pictures/chadroad/medal.png')
-            await ctx.author.avatar_url.save(f"pp_{ctx.author.id}")
+            await ctx.author.avatar.save(f"pp_{ctx.author.id}")
             pp = Image.open(f"pp_{ctx.author.id}")
             file = discord.File("/home/container/Pictures/chadroad/medal.png")
             await ctx.send("Voilà ta médaille :", file = file)

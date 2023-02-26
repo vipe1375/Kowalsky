@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import time as t
 import random as rd
+import openai
 #from discord_slash import ButtonStyle, SlashCommand
 #from discord_slash.utils.manage_components import *
 from database_handler_k import DatabaseHandler
@@ -9,6 +10,8 @@ database_handler = DatabaseHandler("database_kowalsky.db")
 
 intents = discord.Intents.default()
 intents.members = True
+
+openai.api_key = "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"
 
 from version_k import version
 
@@ -103,6 +106,21 @@ class CommandesBase(commands.Cog):
             await ctx.send(embed = embed, file = file)
 
 
+
+    @commands.command()
+    async def askgpt(self, ctx: commands.Context, *, question: str):
+        await ctx.message.delete()
+        response = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=question,
+        max_tokens=1024,
+        n=1,
+        stop=None,
+        temperature=0.5)
+        msg = f"{ctx.message.author} : *{question}*\n\nChatgpt : {response['choices'][0]['text']}"
+        await ctx.send(msg)
+
+
     @commands.command()
     @commands.guild_only()
     async def clear(self, ctx: commands.Context, opt: str = None):
@@ -187,7 +205,7 @@ class CommandesBase(commands.Cog):
         ping = int(self.bot.latency*1000)
         if ping <= 50:
             msg = "||ça bombarde youhou||"
-        elif ping <= 100:
+        elif ping <= 150:
             msg = "||on lag un peu mais oklm||"
         else:
             msg ="||wtf c'est quoi ce lag jsuis sur neptune ou quoi||"

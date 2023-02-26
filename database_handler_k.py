@@ -34,14 +34,14 @@ class DatabaseHandler():
         cursor.execute(query)
         result = cursor.fetchone()
         cursor.close()
-        if result != None:
+        if result == None:
+            return 0
+        else:
             result = dict(result)
             if result['status'] == 0:
                 return False
             elif result['status'] == 1:
                 return True
-        else:
-            return 0
 
 
 
