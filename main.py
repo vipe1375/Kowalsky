@@ -46,6 +46,7 @@ class KBot(commands.Bot):
         await self.load_extension("commandes_troll")
         await self.load_extension("chads")
         await self.load_extension("chads2")
+        await self.load_extension("bet")
 
 bot = KBot()
 bot.remove_command('help')
@@ -85,6 +86,7 @@ async def restart_cogs():
     await bot.reload_extension('commandes_troll')
     await bot.reload_extension('chads')
     await bot.reload_extension('chads2')
+    await bot.reload_extension("bet")
     
     await msg.edit(content=":green_circle: restart cogs ")
 
@@ -146,7 +148,8 @@ async def restart(ctx):
         await bot.reload_extension('commandes_admin')
         await bot.reload_extension('commandes_troll')
         await bot.reload_extension('chads')
-        await channel.send("restart cogs :green_circle:")
+        await bot.reload_extension('bet')
+        await msg.edit(content="restart cogs :green_circle:")
 
 
 

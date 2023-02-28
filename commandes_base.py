@@ -3,6 +3,8 @@ from discord.ext import commands
 import time as t
 import random as rd
 import openai
+import os
+from dotenv import load_dotenv
 #from discord_slash import ButtonStyle, SlashCommand
 #from discord_slash.utils.manage_components import *
 from database_handler_k import DatabaseHandler
@@ -11,7 +13,9 @@ database_handler = DatabaseHandler("database_kowalsky.db")
 intents = discord.Intents.default()
 intents.members = True
 
-openai.api_key = "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"
+load_dotenv()
+
+openai.api_key = os.getenv("key")
 
 from version_k import version
 

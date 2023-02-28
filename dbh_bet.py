@@ -16,9 +16,35 @@ class DatabaseHandlerBet():
 
     # Gestion des events
     def create_event(self, name, time, option_1, option_2):
-        pass
+        cursor = self.con.cursor()
+        query = f"INSERT INTO Events(label, time, option_1, option_2) VALUES (?, ?, ?, ?);"
+        cursor.execute(query, (name, time, option_1, option_2))
+        self.con.commit()
+        cursor.close()
 
     def delete_event(self, id):
         pass
+
+    def get_active_events(self):
+        cursor = self.con.cursor()
+        query = f"SELECT * FROM Events WHERE status = 1;"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        return result
+    
+    def get_inactive_events(self):
+        cursor = self.con.cursor()
+        query = f"SELECT * FROM Events WHERE status = 0;"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        return result
+    
+    def get_event_by_id(self, id):
+        cursor = self.con.cursor()
+        query = f"SELECT * FROM Events WHERE id = {id};"
+        cursor.execute(query)
+        result = cursor.fetchone()
+        cursor.close()
+        return result
 
     
